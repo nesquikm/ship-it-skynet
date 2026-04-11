@@ -30,8 +30,11 @@ Probable (pattern extension — verify by fetching before trusting):
 - Hooks: `https://code.claude.com/docs/en/hooks`
 - MCP: `https://code.claude.com/docs/en/mcp`
 - Settings / permissions: `https://code.claude.com/docs/en/settings`
+- **Agent SDK tool reference (authoritative built-in tool list):** `https://code.claude.com/docs/en/agent-sdk/typescript`
 
 > **Note:** Custom slash commands are now part of skills. Fetch the skills page as authoritative for both — there is no separate slash-commands page. Confirmed 2026-04-11: `code.claude.com/docs/en/slash-commands` now returns the skills page content, so fetching both pages is duplicate work.
+>
+> **Note:** The Agent SDK TypeScript reference is the **authoritative enumeration** of Claude Code's built-in tools (`WebSearch`, `WebFetch`, `Bash`, `Read`, `Edit`, etc.) with their full input/output schemas. The `settings` and `permissions` pages document _permission rules_ for tools but do not list which tools exist — consulting them alone will miss tools. Any matrix row that makes a claim about a specific built-in tool (web search, file ops, bash, image handling, etc.) must cross-check the SDK reference before being marked 🟡 or ❌. This rule exists because the 2026-04-11 run missed Claude Code's `WebSearch` tool by checking `permissions` instead of `agent-sdk/typescript`, and the error sat in the matrix until a reader falsified it empirically.
 
 Authoritative secondary:
 
