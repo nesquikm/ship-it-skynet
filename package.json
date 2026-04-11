@@ -1,0 +1,19 @@
+{
+  "name": "ship-it-skynet",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "A reference matrix comparing agentic AI coding CLIs (Claude Code, Codex CLI, Gemini CLI, ...).",
+  "scripts": {
+    "lint": "markdownlint-cli2",
+    "format": "prettier --write \"**/*.md\"",
+    "format:check": "prettier --check \"**/*.md\"",
+    "check:links": "markdown-link-check --config .markdown-link-check.json --quiet README.md docs/*.md CLAUDE.md",
+    "gate": "npm run lint && npm run format:check && npm run check:links"
+  },
+  "devDependencies": {
+    "markdown-link-check": "^3.14.2",
+    "markdownlint-cli2": "^0.22.0",
+    "prettier": "^3.8.2"
+  }
+}

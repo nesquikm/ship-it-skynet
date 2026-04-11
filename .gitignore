@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.DS_Store
+*.log
+
+# Local Claude Code settings — per-user bash allowlist and enabled plugins.
+.claude/settings.local.json
+
+# Local working notes — kept out of version control by choice.
+specs/

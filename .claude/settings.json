@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install)",
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Bash(npm ci)",
+      "Bash(npx *)",
+      "Bash(git *)",
+      "Bash(gh *)",
+      "WebFetch"
+    ],
+    "deny": []
+  }
+}
