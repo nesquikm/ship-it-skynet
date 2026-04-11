@@ -83,7 +83,7 @@ Updating the matrix should take less than 30 minutes per refresh cycle. If it do
 [cc-sandbox]: https://code.claude.com/docs/en/sandboxing "Claude Code — OS-level sandbox via Seatbelt (macOS) or bubblewrap (Linux/WSL2); filesystem + network isolation with proxy; separate --worktree flag for parallel git worktrees under .claude/worktrees/ (see /common-workflows)"
 [cx-plan]: https://developers.openai.com/codex/cli/slash-commands "Codex CLI — /plan slash command; plan_mode_reasoning_effort config"
 [cx-skills]: https://developers.openai.com/codex/skills "Codex CLI — .agents/skills/<name>/SKILL.md; Agent Skills open standard; progressive disclosure"
-[cx-slash]: https://developers.openai.com/codex/cli/slash-commands "Codex CLI — 26 built-in slash commands; user-defined via skills"
+[cx-slash]: https://developers.openai.com/codex/cli/slash-commands "Codex CLI — 28 built-in slash commands; user-defined via skills"
 [cx-subagents]: https://developers.openai.com/codex/cli/features "Codex CLI — subagents listed as first-class feature"
 [cx-teams]: https://developers.openai.com/codex/subagents "Codex CLI — subagents are hierarchical only: parent orchestrates spawning, routing, waiting, and closing; no peer-to-peer messaging or shared task list; CSV batch mode is experimental"
 [cx-hooks]: https://developers.openai.com/codex/hooks "Codex CLI — five events (SessionStart/PreToolUse/PostToolUse/UserPromptSubmit/Stop); PreToolUse is Bash-only and model-bypassable"
