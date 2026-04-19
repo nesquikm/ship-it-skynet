@@ -2,7 +2,7 @@
 
 > How each CLI lets you package reusable procedures.
 
-**Last verified:** 2026-04-11
+**Last verified:** 2026-04-19
 
 A "skill" in the neutral sense is a reusable, named procedure the agent can invoke on demand — distinct from a slash command in that the model can decide to trigger it based on a description, not only the user.
 

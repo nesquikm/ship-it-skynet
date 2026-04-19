@@ -61,17 +61,29 @@ GitHub repo (README, changelog, version):
 
 ### Gemini CLI (`@google/gemini-cli`)
 
-Canonical doc paths (fetch these directly — don't discover them by walking the repo tree at runtime):
+**Primary source — `geminicli.com/docs/` (preferred; check this first):**
 
-- `docs/hooks/reference.md`
-- `docs/hooks/index.md`
-- `docs/cli/plan-mode.md`
-- `docs/cli/skills.md`
-- `docs/cli/custom-commands.md`
-- `docs/cli/gemini-md.md`
-- `docs/cli/sandbox.md`
-- `docs/cli/git-worktrees.md`
-- `docs/cli/settings.md`
+- Subagents: `https://geminicli.com/docs/core/subagents/`
+- Remote agents: `https://geminicli.com/docs/core/remote-agents/`
+- Hooks: `https://geminicli.com/docs/hooks/`
+- Extensions: `https://geminicli.com/docs/extensions/`
+- Plan mode: `https://geminicli.com/docs/cli/plan-mode/`
+- Rewind: `https://geminicli.com/docs/cli/rewind/`
+- Checkpointing (opt-in shadow git): `https://geminicli.com/docs/cli/checkpointing/`
+- Skills: `https://geminicli.com/docs/cli/skills/`
+- Custom commands: `https://geminicli.com/docs/cli/custom-commands/`
+- GEMINI.md: `https://geminicli.com/docs/cli/gemini-md/`
+- Sandbox: `https://geminicli.com/docs/cli/sandbox/`
+- Git worktrees: `https://geminicli.com/docs/cli/git-worktrees/`
+- Model: `https://geminicli.com/docs/cli/model/`
+- Headless: `https://geminicli.com/docs/cli/headless/`
+- IDE integration: `https://geminicli.com/docs/ide-integration/`
+- Web search: `https://geminicli.com/docs/tools/web-search/`
+- Settings: `https://geminicli.com/docs/cli/settings/`
+
+> **Note:** `geminicli.com/docs/` is Gemini CLI's canonical docs site. The GitHub repo's `docs/` tree is **incomplete** — for example, `docs/cli/subagents.md` does not exist in the repo even though user-definable subagents are a shipped, documented feature on `geminicli.com/docs/core/subagents/`. **Always check the canonical site first.** The GitHub repo is still the source of truth for README, CHANGELOG, and version signals.
+>
+> This rule exists because the 2026-04-19 refresh surfaced a material sourcing failure: the 2026-04-11 run had the Gemini **Sub-agents** cell marked 🟡 ("built-in only") because it only checked the repo tree, which doesn't document user-defined subagents. The same run had the **Checkpoints / rewind** cell at 🟡 because it checked only `docs/cli/checkpointing.md` (the opt-in shadow-git system), missing the separate `/rewind` + `Esc+Esc` feature at `geminicli.com/docs/cli/rewind/`. Any matrix claim about Gemini CLI must cross-check the canonical site before being marked 🟡 or ❌.
 
 GitHub repo (README, changelog, version):
 
@@ -106,6 +118,12 @@ Procedure:
 4. The `skills` and `hooks` pages are smaller and usually stay inline; don't over-engineer fetches for them.
 
 The NFR-1 30-minute refresh budget is protected because fetch + grep is still fast in practice (full 3-tool dry run completed in 216 s on 2026-04-11, including all three persisted pages). The friction the old advice tried to eliminate — "pages got persisted to temp files" — turns out to be trivial once the procedure plans for it.
+
+### For Gemini CLI, prefer `geminicli.com/docs/` over the GitHub repo
+
+The GitHub repo's `docs/` tree is an incomplete subset of Gemini CLI's canonical docs. Shipped, documented features — user-definable subagents, remote agents, the `/rewind` command — have no corresponding file in `github.com/google-gemini/gemini-cli/blob/main/docs/cli/`. Check `geminicli.com/docs/` first for every Gemini claim. Fall back to the repo only when a page genuinely doesn't exist on the canonical site (rare).
+
+Confirmed on 2026-04-19: the 2026-04-11 run's Gemini **Sub-agents** cell (🟡) and **Checkpoints / rewind** cell (🟡) were both sourcing errors, not facts — both flipped to ✅ once the canonical site was checked. Treat a 🟡 or ❌ on a Gemini row as a trigger to re-verify against `geminicli.com/docs/` before trusting it.
 
 ## Process
 
@@ -200,6 +218,8 @@ If the user flags anything, offer to open a follow-up task — either as a new m
 - **NEVER mark unverified cells as ✅.** Use ⏳ until you have a primary-source link.
 - **NEVER add Tier 2 tools as matrix columns.** They belong in prose only.
 - **NEVER use GitHub footnote syntax (`[^name]`) in matrix cells.** VSCode's default markdown preview doesn't render footnotes, so the raw `[^name]` marker leaks into the rendered output. Always use reference-style links: `[✅][cx-plan]` in the cell, with `[cx-plan]: url "short description"` at the bottom of the file. Reference-style links render correctly in both GitHub and VSCode, and the link `title` attribute doubles as a hover tooltip for the source description.
+- **NEVER encode exact counts for drift-prone metrics** in matrix cells or hover text. Slash-command counts, hook-event counts, plugin counts, and similar "how many of X does this CLI have" numbers drift every release and cost one edit per refresh to maintain. Link to the authoritative source table instead (e.g. "built-in slash commands; user-defined via skills" rather than "31 built-in slash commands"). The actual count is one click away from the linked page. **Rationale:** the Codex slash-command count drifted 26 → 28 → 31 across three consecutive refreshes (2026-04-11, 2026-04-14, 2026-04-19), making the number itself a maintenance tax with no information value.
+- **ALWAYS cross-check every 🟡 or ❌ Gemini cell against `geminicli.com/docs/`** before committing. The GitHub repo's `docs/` tree is an incomplete subset — at least two Gemini cells (Sub-agents 🟡, Checkpoints / rewind 🟡) were mis-classified on the 2026-04-11 run because the canonical site wasn't checked. Treat a sub-optimal Gemini rating as a trigger to re-verify, not as a settled result. See [Fetching tips](#for-gemini-cli-prefer-geminiclicomdocs-over-the-github-repo).
 - **ALWAYS bump the date** on every row you verified, changed or not.
 - **ALWAYS run `npm run gate`** at the end. A green gate is part of the deliverable.
 

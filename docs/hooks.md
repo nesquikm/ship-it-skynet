@@ -2,7 +2,7 @@
 
 > Lifecycle events, and the "can I bet a CI pipeline on this?" question.
 
-**Last verified:** 2026-04-11
+**Last verified:** 2026-04-19
 
 A hook is a user-defined script the harness runs at a lifecycle event. Critically, hooks run _outside_ the model — the model cannot bypass them by choosing not to run them. That's what separates a hook from a skill or a custom tool.
 
@@ -24,7 +24,7 @@ Hooks are configured in `.claude/settings.json` (project), `.claude/settings.loc
 
 Full event list: `SessionStart`, `SessionEnd`, `InstructionsLoaded`, `UserPromptSubmit`, `Stop`, `StopFailure`, `PreToolUse`, `PostToolUse`, `PostToolUseFailure`, `PermissionRequest`, `PermissionDenied`, `SubagentStart`, `SubagentStop`, `TaskCreated`, `TaskCompleted`, `CwdChanged`, `FileChanged`, `ConfigChange`, `WorktreeCreate`, `WorktreeRemove`, `PreCompact`, `PostCompact`, `Notification`, `TeammateIdle`, `Elicitation`, `ElicitationResult`.
 
-Blocking events: `PreToolUse` (deny/allow/ask/defer via `hookSpecificOutput.permissionDecision`), `PermissionRequest`, `UserPromptSubmit`, `Stop`, `SubagentStop`, `TeammateIdle`, `TaskCreated`, `TaskCompleted`, `ConfigChange`, `Elicitation`, `ElicitationResult`, `WorktreeCreate`.
+Blocking events: `PreToolUse` (deny/allow/ask/defer via `hookSpecificOutput.permissionDecision`), `PermissionRequest`, `UserPromptSubmit`, `Stop`, `SubagentStop`, `TeammateIdle`, `TaskCreated`, `TaskCompleted`, `ConfigChange`, `PreCompact`, `Elicitation`, `ElicitationResult`, `WorktreeCreate`.
 
 Hook handler types: `command`, `http`, `prompt`, `agent`. Command hooks receive JSON on stdin, emit JSON on stdout, and use exit code 2 to block. Matcher field supports exact strings, `|`-separated lists, or JavaScript regex (e.g. `"mcp__.*"` to match every MCP tool).
 

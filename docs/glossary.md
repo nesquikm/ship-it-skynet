@@ -4,7 +4,7 @@ Half the confusion between these tools is that "agent" means five different thin
 
 **Format:** neutral term → what each vendor calls it → short definition.
 
-**Last updated:** 2026-04-11
+**Last updated:** 2026-04-19
 
 ## Terms
 
@@ -12,11 +12,11 @@ Half the confusion between these tools is that "agent" means five different thin
 
 A child process the main agent can spawn with its own isolated context window and tool access.
 
-| Vendor      | Term              | Notes                                                                                           |
-| ----------- | ----------------- | ----------------------------------------------------------------------------------------------- |
-| Claude Code | sub-agent         | First-class. Built-in `Explore`, `Plan`, `general-purpose`; user-defined via `.claude/agents/`  |
-| Codex CLI   | subagent          | First-class feature for "parallelized task workflows" — see [Codex features][cx-features]       |
-| Gemini CLI  | research subagent | Built-in only (`codebase_investigator`, `cli_help`); not user-definable. Invoked via tool calls |
+| Vendor      | Term      | Notes                                                                                                                                                                                                               |
+| ----------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Claude Code | sub-agent | First-class. Built-in `Explore`, `Plan`, `general-purpose`; user-defined via `.claude/agents/`                                                                                                                      |
+| Codex CLI   | subagent  | First-class feature for "parallelized task workflows" — see [Codex features][cx-features]                                                                                                                           |
+| Gemini CLI  | subagent  | User-definable via `.gemini/agents/*.md` (project) or `~/.gemini/agents/*.md` (user); built-ins `codebase_investigator`, `cli_help`, `generalist`, experimental `browser_agent`; cannot spawn or message each other |
 
 ### Skill _(neutral)_
 

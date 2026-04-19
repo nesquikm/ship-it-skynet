@@ -2,7 +2,7 @@
 
 > Who actually supports MCP, and how deep the support goes.
 
-**Last verified:** 2026-04-11
+**Last verified:** 2026-04-19
 
 MCP is a standardized protocol — servers expose tools, resources, and prompts; clients (CLIs) connect to them. "Supports MCP" is binary, but the _quality_ of support varies: which transports (stdio, HTTP, SSE), which features (tools only vs. resources + prompts), error handling, reconnect behavior.
 
