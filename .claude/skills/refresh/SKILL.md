@@ -119,6 +119,24 @@ Procedure:
 
 The NFR-1 30-minute refresh budget is protected because fetch + grep is still fast in practice (full 3-tool dry run completed in 216 s on 2026-04-11, including all three persisted pages). The friction the old advice tried to eliminate — "pages got persisted to temp files" — turns out to be trivial once the procedure plans for it.
 
+### For non-GitHub HTML pages, `curl` + `sed` + `grep` beats `WebFetch`
+
+`developers.openai.com/codex/*` and `geminicli.com/docs/*` pages run 90 KB–290 KB of HTML. `WebFetch` reliably trips its output budget on the larger ones, and the summarization model rewrites whatever it does return — fine when you trust the model, painful when you need to confirm a specific event name, matcher value, or table cell verbatim.
+
+The faster pattern is `curl -sL <url> -o /tmp/<slug>.html`, then strip the chrome and pipe to `grep` for the keywords you care about. Concretely:
+
+```bash
+curl -sL https://developers.openai.com/codex/hooks -o /tmp/cx-hooks.html
+grep -A 2000 '<article' /tmp/cx-hooks.html \
+  | sed -E 's/<[^>]+>/ /g; s/&nbsp;/ /g; s/  +/ /g' \
+  | tr -s '\n' \
+  | grep -E '^.{15,}'
+```
+
+You can fan out the curl calls in parallel (one Bash tool call per URL in the same message), then grep each cached file independently. The whole tier-1 fetch phase ran in well under a minute on 2026-04-27 this way, and surfaced the verbatim text of the Codex hooks event table — including the `PermissionRequest` event that was missing from the matrix.
+
+Use this for `developers.openai.com/codex/*`, `geminicli.com/docs/*`, and any other non-GitHub HTML doc. Keep `gh api` for GitHub-hosted markdown (it's already raw), and `WebFetch` for cases where you genuinely want a model summary rather than the source bytes.
+
 ### For Gemini CLI, prefer `geminicli.com/docs/` over the GitHub repo
 
 The GitHub repo's `docs/` tree is an incomplete subset of Gemini CLI's canonical docs. Shipped, documented features — user-definable subagents, remote agents, the `/rewind` command — have no corresponding file in `github.com/google-gemini/gemini-cli/blob/main/docs/cli/`. Check `geminicli.com/docs/` first for every Gemini claim. Fall back to the repo only when a page genuinely doesn't exist on the canonical site (rare).

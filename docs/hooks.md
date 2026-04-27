@@ -2,7 +2,7 @@
 
 > Lifecycle events, and the "can I bet a CI pipeline on this?" question.
 
-**Last verified:** 2026-04-19
+**Last verified:** 2026-04-27
 
 A hook is a user-defined script the harness runs at a lifecycle event. Critically, hooks run _outside_ the model — the model cannot bypass them by choosing not to run them. That's what separates a hook from a skill or a custom tool.
 
@@ -14,7 +14,7 @@ If a hook can be silently skipped, it's not a gate — it's a suggestion. A pre-
 
 - **Claude Code:** yes, bet the pipeline. Full lifecycle with blocking `PreToolUse`.
 - **Gemini CLI:** yes, bet the pipeline. Full lifecycle with blocking `BeforeTool` and rewritable tool input.
-- **Codex CLI:** partially. A `PreToolUse` hook can block simple Bash commands via `hooks.json`, but coverage is incomplete — it only intercepts shell, not MCP / `Write` / `WebSearch`, and the model can bypass the Bash filter by writing a script to disk and executing that instead. Not yet a deterministic CI-pipeline gate.
+- **Codex CLI:** partially. `PreToolUse` and the new `PermissionRequest` hook now intercept Bash, `apply_patch` (with `Edit` / `Write` matcher aliases), and MCP tool calls, with structured `allow` / `deny` decisions — much broader than the early-2026 Bash-only surface. Coverage still doesn't extend to `WebSearch`, the new streaming `unified_exec` shell mechanism, or sub-agent lifecycle events, and the docs explicitly call hooks "a guardrail rather than a complete enforcement boundary because Codex can often perform equivalent work through another supported tool path." Not yet a deterministic CI-pipeline gate.
 
 ## Claude Code
 
@@ -32,17 +32,17 @@ Hook handler types: `command`, `http`, `prompt`, `agent`. Command hooks receive 
 
 Docs: <https://developers.openai.com/codex/hooks> (primary) and <https://github.com/openai/codex/blob/main/docs/config.md> (legacy `notify` hook only)
 
-**Five hook events:** Codex gained a full lifecycle hook surface in early 2026, expanding from the previous notify-only design. Events: `SessionStart`, `PreToolUse`, `PostToolUse`, `UserPromptSubmit`, `Stop`. Configured in `hooks.json` at `~/.codex/hooks.json` (user) or `<repo>/.codex/hooks.json` (project). The older end-of-turn `notify` hook still exists, configured separately in `config.toml` under `[notify]`.
+**Full lifecycle events:** Codex gained a full lifecycle hook surface in early 2026, expanding from the previous notify-only design. Current events: `SessionStart`, `PreToolUse`, `PermissionRequest`, `PostToolUse`, `UserPromptSubmit`, `Stop`. Configured in `hooks.json` at `~/.codex/hooks.json` (user) or `<repo>/.codex/hooks.json` (project), or inline `[hooks]` tables in `config.toml`; gated behind `codex_hooks = true`. The older end-of-turn `notify` hook still exists, configured separately in `config.toml` under `[notify]`.
 
-`PreToolUse` supports blocking via `permissionDecision: "deny"` or via exit code 2, matching the Claude Code convention.
+`PreToolUse` supports blocking via `permissionDecision: "deny"` or via exit code 2, matching the Claude Code convention. `PermissionRequest` is a separate event that runs when Codex is about to surface an approval prompt: hooks return a structured `decision.behavior: "allow"` or `"deny"`, with `deny` winning when multiple matchers fire — the first canonical Codex hook event with structured allow/deny semantics. Matchers on `PreToolUse`, `PermissionRequest`, and `PostToolUse` accept `Bash`, `apply_patch` (with `Edit` / `Write` aliases), and MCP tool names like `mcp__server__tool` or regexes like `mcp__filesystem__.*`.
 
 **What's still missing:**
 
-- **Coverage gap.** `PreToolUse` only intercepts simple Bash calls. The model can bypass the Bash filter trivially by writing a shell script to disk and executing that instead, or by using MCP tools, `Write`, or `WebSearch` — none of which fire the hook.
-- **No tool-input rewriting.** `PreToolUse` is all-or-nothing (allow or deny); it cannot mutate the model's arguments the way Gemini CLI's `BeforeTool` can.
+- **Coverage gap.** Matcher coverage now extends beyond Bash to `apply_patch` and MCP tools, but the docs are explicit: "this doesn't intercept all shell calls yet, only the simple ones. The newer `unified_exec` mechanism allows richer streaming stdin/stdout handling of shell, but interception is incomplete. Similarly, this doesn't intercept `WebSearch` or other non-shell, non-MCP tool calls." A model that wants to bypass a Bash matcher can route through `unified_exec` or pick a tool path the matcher doesn't see.
+- **No tool-input rewriting.** `PreToolUse` is allow-or-deny; `updatedInput`, `additionalContext`, `continue: false`, `stopReason`, and `suppressOutput` are parsed but fail open. It cannot mutate the model's arguments the way Gemini CLI's `BeforeTool` can.
 - **No sub-agent lifecycle events.** Sub-agent start/stop is not hookable.
 
-This means Codex CLI _partially_ passes the "can I bet a CI pipeline on this?" test — you can enforce a shell-command denylist, but not a comprehensive trust boundary. For deterministic enforcement across every tool, you still need to run gates outside Codex (git pre-commit hooks, CI), the same as before. The capability has narrowed the gap but not closed it.
+This means Codex CLI _partially_ passes the "can I bet a CI pipeline on this?" test — you can enforce denylists across Bash, `apply_patch`, and MCP tool calls, plus reject approval requests at `PermissionRequest` time, but not a comprehensive trust boundary. For deterministic enforcement across every tool, you still need to run gates outside Codex (git pre-commit hooks, CI), the same as before. The capability has narrowed the gap but not closed it.
 
 ## Gemini CLI
 
@@ -66,4 +66,4 @@ Environment variables in hook scripts: `GEMINI_PROJECT_DIR`, `GEMINI_SESSION_ID`
 
 ## Regression watch
 
-The Claude Code `↔` Gemini CLI parity is new as of the 2026-04-11 refresh. Codex CLI has narrowed the gap — a `PreToolUse` hook surface landed in early 2026 — but remains the outlier: enforcement is Bash-only and model-bypassable, so you still can't wire a comprehensive pre-tool gate.
+The Claude Code `↔` Gemini CLI parity is new as of the 2026-04-11 refresh. Codex CLI has narrowed the gap further — `PreToolUse` and the new `PermissionRequest` event now match `apply_patch` and MCP tool names, not just Bash — but it remains the outlier: enforcement is still model-bypassable (no `unified_exec`, no `WebSearch`, no input rewrite), so you still can't wire a comprehensive pre-tool gate.

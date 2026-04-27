@@ -4,7 +4,7 @@ Half the confusion between these tools is that "agent" means five different thin
 
 **Format:** neutral term → what each vendor calls it → short definition.
 
-**Last updated:** 2026-04-19
+**Last updated:** 2026-04-27
 
 ## Terms
 

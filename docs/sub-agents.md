@@ -2,7 +2,7 @@
 
 > Two rows in the matrix, one spectrum: delegated helpers at one end, coordinating peers at the other.
 
-**Last verified:** 2026-04-19
+**Last verified:** 2026-04-27
 
 A "sub-agent" in the neutral sense is a helper agent the parent can spawn to do focused work in its own context window, then fold the result back into the main conversation. All three tier-1 CLIs implement some version of this. The deeper question — and the reason this deep-dive exists — is whether the helpers can _talk to each other_, claim tasks from a shared queue, and be driven individually by the user. That's where the three tools diverge, and it's why the matrix carries two separate rows (Sub-agents and Agent teams) instead of one.
 
