@@ -2,7 +2,7 @@
 
 > Who actually supports MCP, and how deep the support goes.
 
-**Last verified:** 2026-04-27
+**Last verified:** 2026-05-15
 
 MCP is a standardized protocol — servers expose tools, resources, and prompts; clients (CLIs) connect to them. "Supports MCP" is binary, but the _quality_ of support varies: which transports (stdio, HTTP, SSE), which features (tools only vs. resources + prompts), error handling, reconnect behavior.
 
@@ -18,7 +18,7 @@ Sub-agents can receive their own MCP server stack: string references share the p
 
 ## Codex CLI
 
-Docs: <https://github.com/openai/codex/blob/main/docs/config.md> (see "Connecting to MCP servers")
+Docs: <https://developers.openai.com/codex/mcp>
 
 MCP servers are configured in `~/.codex/config.toml` under `[mcp_servers.*]`. Codex stores **per-tool approval overrides** directly in the same table:
 
@@ -31,7 +31,7 @@ This is tighter per-tool scoping than Claude Code's permission rules — you app
 
 ## Gemini CLI
 
-Docs: <https://github.com/google-gemini/gemini-cli/blob/main/docs/hooks/reference.md> (MCP tool naming), plus `docs/tools/mcp-server.md` and the extensions system.
+Docs: <https://geminicli.com/docs/tools/mcp-server/> (canonical MCP reference) and <https://geminicli.com/docs/hooks/reference/> (MCP tool naming inside hook matchers), plus the extensions system.
 
 MCP is exposed alongside Gemini's built-in tool catalog. Tool names follow the pattern `mcp_<server_name>_<tool_name>` (underscore-separated, contrast with Claude Code's double-underscore). The naming is important because hook matchers are regexes — a `BeforeTool` hook with `matcher: "mcp_github_.*"` gates every GitHub MCP tool.
 

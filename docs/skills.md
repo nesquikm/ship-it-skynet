@@ -2,7 +2,7 @@
 
 > How each CLI lets you package reusable procedures.
 
-**Last verified:** 2026-04-27
+**Last verified:** 2026-05-15
 
 A "skill" in the neutral sense is a reusable, named procedure the agent can invoke on demand — distinct from a slash command in that the model can decide to trigger it based on a description, not only the user.
 
@@ -36,7 +36,7 @@ Activation:
 
 ## Gemini CLI
 
-Docs: <https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/skills.md>
+Docs: <https://geminicli.com/docs/cli/skills/>
 
 Discovery tiers (highest to lowest precedence): **Workspace > User > Extension**. Workspace skills live in `.gemini/skills/` or `.agents/skills/` (the latter alias is Gemini's nod to portability across agent tools). User skills in `~/.gemini/skills/`.
 

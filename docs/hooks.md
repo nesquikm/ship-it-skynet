@@ -2,7 +2,7 @@
 
 > Lifecycle events, and the "can I bet a CI pipeline on this?" question.
 
-**Last verified:** 2026-04-27
+**Last verified:** 2026-05-15
 
 A hook is a user-defined script the harness runs at a lifecycle event. Critically, hooks run _outside_ the model — the model cannot bypass them by choosing not to run them. That's what separates a hook from a skill or a custom tool.
 
@@ -30,7 +30,7 @@ Hook handler types: `command`, `http`, `prompt`, `agent`. Command hooks receive 
 
 ## Codex CLI
 
-Docs: <https://developers.openai.com/codex/hooks> (primary) and <https://github.com/openai/codex/blob/main/docs/config.md> (legacy `notify` hook only)
+Docs: <https://developers.openai.com/codex/hooks> (primary) and <https://developers.openai.com/codex/config-advanced> (legacy `notify` hook only)
 
 **Full lifecycle events:** Codex gained a full lifecycle hook surface in early 2026, expanding from the previous notify-only design. Current events: `SessionStart`, `PreToolUse`, `PermissionRequest`, `PostToolUse`, `UserPromptSubmit`, `Stop`. Configured in `hooks.json` at `~/.codex/hooks.json` (user) or `<repo>/.codex/hooks.json` (project), or inline `[hooks]` tables in `config.toml`; gated behind `codex_hooks = true`. The older end-of-turn `notify` hook still exists, configured separately in `config.toml` under `[notify]`.
 
@@ -46,11 +46,11 @@ This means Codex CLI _partially_ passes the "can I bet a CI pipeline on this?" t
 
 ## Gemini CLI
 
-Docs: <https://github.com/google-gemini/gemini-cli/blob/main/docs/hooks/index.md> and <https://github.com/google-gemini/gemini-cli/blob/main/docs/hooks/reference.md>
+Docs: <https://geminicli.com/docs/hooks/> and <https://geminicli.com/docs/hooks/reference/>
 
 Configured in `settings.json` (project: `.gemini/settings.json`, user: `~/.gemini/settings.json`, system: `/etc/gemini-cli/settings.json`, plus extensions). Hook handlers currently support only `type: "command"`.
 
-Full event list: `SessionStart`, `SessionEnd`, `BeforeAgent`, `AfterAgent`, `BeforeModel`, `AfterModel`, `BeforeToolSelection`, `BeforeTool`, `AfterTool`, `PreCompress`, `Notification`.
+Full event list (verified 2026-05-15): `SessionStart`, `SessionEnd`, `BeforeAgent`, `AfterAgent`, `BeforeModel`, `AfterModel`, `BeforeToolSelection`, `BeforeTool`, `AfterTool`, `PreCompress`, `Notification`.
 
 Blocking events and what they can do:
 

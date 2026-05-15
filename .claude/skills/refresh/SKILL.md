@@ -51,8 +51,16 @@ Primary source — developers site (preferred; check this first):
 - Agent approvals & security: `https://developers.openai.com/codex/agent-approvals-security`
 - AGENTS.md guide: `https://developers.openai.com/codex/guides/agents-md`
 - Hooks: `https://developers.openai.com/codex/hooks` _(bare path — not under `/cli/`; `codex/cli/hooks` 404s)_
+- Plugins overview: `https://developers.openai.com/codex/plugins`
+- **Plugins — Build (authoritative for marketplace semantics):** `https://developers.openai.com/codex/plugins/build` _(the `/plugins` page describes installation only; `codex plugin marketplace add` argument types, manifest shape, and self-serve catalog rules live on `/build`. Any matrix claim about Codex marketplace flexibility must check this page — the 2026-05-15 run found Codex plugins flip from 🟡 to ✅ here.)_
+- Subagents: `https://developers.openai.com/codex/subagents` (concepts) and `https://developers.openai.com/codex/cli/subagents` if it exists; check both
+- MCP: `https://developers.openai.com/codex/mcp` _(canonical — replaces the old `github.com/openai/codex/blob/main/docs/config.md` link, which is now a 15-line redirect stub)_
+- IDE extension: `https://developers.openai.com/codex/ide`
+- Config (basic / advanced / reference): `https://developers.openai.com/codex/config-basic`, `/codex/config-advanced` _(legacy `notify` hook lives here)_, `/codex/config-reference`
 
 > **Note:** `github.com/openai/codex/docs/*.md` files are mostly one-line redirect stubs pointing at the developers site. Check the developers site first; use the GitHub repo only for README, CHANGELOG, and version signals.
+>
+> **Note (2026-05-15):** The developers.openai.com site nav has expanded with new concept pages — **Memories**, **Chronicle**, **Sandboxing**, **Auto-review**, **Subagents**, **Workflows**, **Plugins** — that didn't exist on prior runs. None of these introduce new matrix _rows_ (they refine concepts already covered), but if a future row addition touches one of those areas, the corresponding `/codex/<topic>` URL is the canonical source. Sandboxing details still live on the `agent-approvals-security` page.
 
 GitHub repo (README, changelog, version):
 
@@ -65,7 +73,7 @@ GitHub repo (README, changelog, version):
 
 - Subagents: `https://geminicli.com/docs/core/subagents/`
 - Remote agents: `https://geminicli.com/docs/core/remote-agents/`
-- Hooks: `https://geminicli.com/docs/hooks/`
+- Hooks: `https://geminicli.com/docs/hooks/` and reference at `https://geminicli.com/docs/hooks/reference/`
 - Extensions: `https://geminicli.com/docs/extensions/`
 - Plan mode: `https://geminicli.com/docs/cli/plan-mode/`
 - Rewind: `https://geminicli.com/docs/cli/rewind/`
@@ -79,6 +87,7 @@ GitHub repo (README, changelog, version):
 - Headless: `https://geminicli.com/docs/cli/headless/`
 - IDE integration: `https://geminicli.com/docs/ide-integration/`
 - Web search: `https://geminicli.com/docs/tools/web-search/`
+- MCP servers: `https://geminicli.com/docs/tools/mcp-server/` _(canonical — replaces older citations of `github.com/google-gemini/gemini-cli/blob/main/docs/hooks/reference.md` for MCP claims)_
 - Settings: `https://geminicli.com/docs/cli/settings/`
 
 > **Note:** `geminicli.com/docs/` is Gemini CLI's canonical docs site. The GitHub repo's `docs/` tree is **incomplete** — for example, `docs/cli/subagents.md` does not exist in the repo even though user-definable subagents are a shipped, documented feature on `geminicli.com/docs/core/subagents/`. **Always check the canonical site first.** The GitHub repo is still the source of truth for README, CHANGELOG, and version signals.
@@ -238,6 +247,7 @@ If the user flags anything, offer to open a follow-up task — either as a new m
 - **NEVER use GitHub footnote syntax (`[^name]`) in matrix cells.** VSCode's default markdown preview doesn't render footnotes, so the raw `[^name]` marker leaks into the rendered output. Always use reference-style links: `[✅][cx-plan]` in the cell, with `[cx-plan]: url "short description"` at the bottom of the file. Reference-style links render correctly in both GitHub and VSCode, and the link `title` attribute doubles as a hover tooltip for the source description.
 - **NEVER encode exact counts for drift-prone metrics** in matrix cells or hover text. Slash-command counts, hook-event counts, plugin counts, and similar "how many of X does this CLI have" numbers drift every release and cost one edit per refresh to maintain. Link to the authoritative source table instead (e.g. "built-in slash commands; user-defined via skills" rather than "31 built-in slash commands"). The actual count is one click away from the linked page. **Rationale:** the Codex slash-command count drifted 26 → 28 → 31 across three consecutive refreshes (2026-04-11, 2026-04-14, 2026-04-19), making the number itself a maintenance tax with no information value.
 - **ALWAYS cross-check every 🟡 or ❌ Gemini cell against `geminicli.com/docs/`** before committing. The GitHub repo's `docs/` tree is an incomplete subset — at least two Gemini cells (Sub-agents 🟡, Checkpoints / rewind 🟡) were mis-classified on the 2026-04-11 run because the canonical site wasn't checked. Treat a sub-optimal Gemini rating as a trigger to re-verify, not as a settled result. See [Fetching tips](#for-gemini-cli-prefer-geminiclicomdocs-over-the-github-repo).
+- **ALWAYS use the canonical-site URL in matrix link refs and deep-dive `Docs:` lines**, not the GitHub repo URL. For Gemini that's `geminicli.com/docs/`; for Codex that's `developers.openai.com/codex/`. The skill's own canonical-source rule applies to the matrix link refs themselves, not just the fetch phase. Exceptions: when a feature genuinely has no dedicated canonical-site page (e.g. Gemini image-paste UX as of 2026-05-15), citing the GitHub README is acceptable — but note the gap in the refresh report so future runs catch a new page if it appears. The 2026-05-15 run flipped 11 Gemini and 1 Codex matrix link refs from GitHub URLs to canonical-site URLs after a reader flagged that the rule was applied to fetches but not to citations.
 - **ALWAYS bump the date** on every row you verified, changed or not.
 - **ALWAYS run `npm run gate`** at the end. A green gate is part of the deliverable.
 

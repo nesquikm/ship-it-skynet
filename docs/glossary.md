@@ -4,7 +4,7 @@ Half the confusion between these tools is that "agent" means five different thin
 
 **Format:** neutral term → what each vendor calls it → short definition.
 
-**Last updated:** 2026-04-27
+**Last updated:** 2026-05-15
 
 ## Terms
 
@@ -34,11 +34,11 @@ All three vendors implement the [Agent Skills open standard](https://agentskills
 
 A user-defined script the harness runs at a lifecycle event (pre-tool, post-tool, on-submit, etc.). Runs outside the model and cannot be bypassed by the model.
 
-| Vendor      | Term | Notes                                                                                                                                                                                            |
-| ----------- | ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Claude Code | hook | Full lifecycle — `PreToolUse`, `PostToolUse`, `UserPromptSubmit`, `SessionStart`, and ~20 others. Configured in `.claude/settings.json`                                                          |
-| Codex CLI   | hook | Five events — `SessionStart`, `PreToolUse` (Bash-only, bypassable), `PostToolUse`, `UserPromptSubmit`, `Stop` — in `hooks.json`, plus legacy `notify`. See [hooks deep-dive](hooks.md#codex-cli) |
-| Gemini CLI  | hook | Full lifecycle — `BeforeTool`, `AfterTool`, `BeforeAgent`, `AfterAgent`, etc. Configured in `.gemini/settings.json`. Fingerprinted for safety                                                    |
+| Vendor      | Term | Notes                                                                                                                                                                                                                                                                                      |
+| ----------- | ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Claude Code | hook | Full lifecycle — `PreToolUse`, `PostToolUse`, `UserPromptSubmit`, `SessionStart`, and ~20 others. Configured in `.claude/settings.json`                                                                                                                                                    |
+| Codex CLI   | hook | Six events — `SessionStart`, `PreToolUse`, `PermissionRequest`, `PostToolUse`, `UserPromptSubmit`, `Stop` — in `hooks.json`, plus legacy `notify`. Matchers cover Bash, `apply_patch`, and MCP tool names but not `unified_exec` or `WebSearch`. See [hooks deep-dive](hooks.md#codex-cli) |
+| Gemini CLI  | hook | Full lifecycle — `BeforeTool`, `AfterTool`, `BeforeAgent`, `AfterAgent`, etc. Configured in `.gemini/settings.json`. Fingerprinted for safety                                                                                                                                              |
 
 ### MCP server _(neutral)_
 
