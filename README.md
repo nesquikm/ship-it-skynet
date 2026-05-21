@@ -2,7 +2,7 @@
 
 > A reference matrix comparing agentic AI coding CLIs. Continuous deployment, continuous dread.
 
-**Last updated:** 2026-05-15 &nbsp;·&nbsp; **Matrix last verified:** 2026-05-15 (all three tier-1 columns)
+**Last updated:** 2026-05-21 &nbsp;·&nbsp; **Matrix last verified:** 2026-05-15 (all three tier-1 columns)
 
 This is not another "best AI tool 2026" listicle. It's a Rosetta stone: row-per-feature, column-per-tool lookup for developers who already use one of these CLIs and want to know what the other side has.
 
@@ -27,6 +27,8 @@ See [`docs/glossary.md`](docs/glossary.md) for vendor-terminology mappings — h
 ## The matrix
 
 **Legend:** ✅ supported · 🟡 partial · ❌ not supported · ⏳ unverified (run `/refresh`). Hover a cell for a short source description; click to open the primary source.
+
+> ⚠️ **Gemini CLI is being sunset.** On 2026-05-19 (I/O), Google announced it is [transitioning Gemini CLI to Antigravity CLI][gm-antigravity]. Gemini CLI and the Gemini Code Assist IDE extensions stop serving free and paid **consumer** tiers on **2026-06-18**; enterprise Standard/Enterprise licenses retain access via paid API keys. The Go-based Antigravity CLI is positioned as the successor and preserves Skills, Hooks, Subagents, and Extensions (renamed "plugins"). We're keeping the Gemini CLI column live until the sunset and will migrate it to Antigravity CLI on a future `/refresh` once the [Antigravity docs][gm-antigravity] are verifiable to our primary-source bar (they're currently JS-rendered single-page apps that don't expose cell-level claims).
 
 | Feature                      | Claude Code                                                                          | Codex CLI                                                 | Gemini CLI                                           |
 | ---------------------------- | ------------------------------------------------------------------------------------ | --------------------------------------------------------- | ---------------------------------------------------- |
@@ -92,6 +94,7 @@ Updating the matrix should take less than 30 minutes per refresh cycle. If it do
 [cc-approvals]: https://code.claude.com/docs/en/settings "Claude Code — default / acceptEdits / plan / auto / dontAsk / bypassPermissions (defaultMode setting)"
 [cx-memory]: https://developers.openai.com/codex/guides/agents-md "Codex CLI — AGENTS.md loaded hierarchically from ~/.codex and git root"
 [cx-sandbox]: https://developers.openai.com/codex/agent-approvals-security "Codex CLI — per-platform sandbox: Seatbelt / bubblewrap+seccomp / Landlock / Windows native"
+[gm-antigravity]: https://developers.googleblog.com/an-important-update-transitioning-gemini-cli-to-antigravity-cli/ "Google Developers Blog (2026-05-19) — Gemini CLI is transitioning to the Go-based Antigravity CLI; Gemini CLI + Gemini Code Assist IDE extensions stop serving free and paid consumer tiers on 2026-06-18, enterprise Standard/Enterprise retains paid-API-key access; Antigravity CLI preserves Skills, Hooks, Subagents, and Extensions (renamed plugins). Migration guide at antigravity.google/docs/gcli-migration"
 [gm-plan]: https://geminicli.com/docs/cli/plan-mode/ "Gemini CLI — /plan command; Shift+Tab toggle; --approval-mode=plan"
 [gm-skills]: https://geminicli.com/docs/cli/skills/ "Gemini CLI — .gemini/skills/ or .agents/skills/; activate_skill tool; Agent Skills open standard"
 [gm-slash]: https://geminicli.com/docs/cli/custom-commands/ "Gemini CLI — TOML files in ~/.gemini/commands/, namespaced subdirs, {{args}} and !{...} shell injection, plus @{...} file injection"
