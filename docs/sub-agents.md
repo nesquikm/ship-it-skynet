@@ -2,7 +2,7 @@
 
 > Two rows in the matrix, one spectrum: delegated helpers at one end, coordinating peers at the other.
 
-**Last verified:** 2026-05-15
+**Last verified:** 2026-06-10
 
 A "sub-agent" in the neutral sense is a helper agent the parent can spawn to do focused work in its own context window, then fold the result back into the main conversation. All three tier-1 CLIs implement some version of this. The deeper question — and the reason this deep-dive exists — is whether the helpers can _talk to each other_, claim tasks from a shared queue, and be driven individually by the user. That's where the three tools diverge, and it's why the matrix carries two separate rows (Sub-agents and Agent teams) instead of one.
 
@@ -63,7 +63,7 @@ Current limitations worth knowing before you bet a workflow on this:
 
 Docs: <https://developers.openai.com/codex/subagents>
 
-Codex CLI has sub-agents but no agent-teams equivalent. Sub-agents are defined as standalone TOML files under `~/.codex/agents/` (user) or `.codex/agents/` (project). Global settings live in `config.toml` under `[agents]`.
+Codex CLI has sub-agents but no agent-teams equivalent. Sub-agent workflows are enabled by default in current releases. Sub-agents are defined as standalone TOML files under `~/.codex/agents/` (user) or `.codex/agents/` (project); each file must define `name`, `description`, and `developer_instructions`, while optional fields (`model`, `model_reasoning_effort`, `sandbox_mode`, `mcp_servers`, `skills.config`) inherit from the parent session when omitted — note `mcp_servers`, which scopes MCP servers to a single agent. Global settings live in `config.toml` under `[agents]`: `max_threads` caps concurrent threads, and `max_depth` (default 1) lets a direct child spawn but blocks deeper recursion unless you raise it.
 
 The model is strictly hierarchical. Quoting the Codex docs: _"Codex handles orchestration across agents, including spawning new subagents, routing follow-up instructions, waiting for results, and closing agent threads."_ The parent spawns, routes, waits, and closes — there is no peer-to-peer messaging and no shared task list. The user does get direct visibility via the `/agent` slash command (switch between active agent threads, inspect the ongoing thread, open a sub-agent to answer a request before the parent does), which is more than Claude Code's sub-agent UX offers, but the sub-agent still reports _only_ to its parent.
 

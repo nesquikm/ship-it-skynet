@@ -115,18 +115,17 @@ gh api repos/{owner}/{repo}/contents/{path} -H "Accept: application/vnd.github.r
 
 `WebFetch` against blob URLs redirects to rendered HTML, and the extraction model summarizes the page instead of returning raw markdown. The `gh api` raw-content header returns clean markdown every time. Use this for every doc file, README, and CHANGELOG hosted on GitHub.
 
-### Expect long Claude Code docs pages to persist — grep the temp file
+### Claude Code docs serve raw markdown — curl the `.md` endpoint, skip `WebFetch` entirely
 
-Three Claude Code docs pages (`sub-agents` ~51 KB, `mcp` ~54 KB, `settings` ~94 KB) reliably trip the `WebFetch` output budget and are auto-persisted to a temp file. **Narrow extraction prompts don't help** — confirmed empirically on 2026-04-11 — because `WebFetch` measures the upstream document's wire size _before_ the summarization model sees the prompt. Prompt verbosity cannot reduce upstream bytes. This was a false lead; treat persistence as the expected path for these pages.
+Discovered 2026-06-10: every `code.claude.com/docs/en/<slug>` page also serves clean raw markdown at `code.claude.com/docs/en/<slug>.md` (e.g. `https://code.claude.com/docs/en/hooks.md`), and `https://code.claude.com/docs/llms.txt` is a machine-readable index of all pages. This supersedes the old WebFetch + temp-file-grep procedure for Claude Code pages.
 
 Procedure:
 
-1. Fetch each page with whatever prompt is natural for what you're looking for.
-2. When `WebFetch` reports "Output too large (NNN KB)" and writes to a temp file, capture the temp file path from the message.
-3. `grep` the temp file for the specific heading, field, table row, or keyword you need — e.g. `grep -A 5 "defaultMode" /tmp/webfetch-XXXX.md`. This is still fast: no extra network round-trip.
-4. The `skills` and `hooks` pages are smaller and usually stay inline; don't over-engineer fetches for them.
+1. `curl -sL --compressed "https://code.claude.com/docs/en/<slug>.md" -o /tmp/cc-<slug>.md` — fan out the fetches in parallel (one Bash call with a `for`/`&`/`wait` loop works). All 18 tier-1-relevant pages fetched in seconds on 2026-06-10.
+2. `grep` the local files directly — they're already markdown, no HTML stripping needed.
+3. If a future `.md` fetch starts returning HTML or 404s, fall back to `WebFetch` + temp-file grep (the pre-2026-06-10 procedure; see git history of this file) and note the regression in the refresh report.
 
-The NFR-1 30-minute refresh budget is protected because fetch + grep is still fast in practice (full 3-tool dry run completed in 216 s on 2026-04-11, including all three persisted pages). The friction the old advice tried to eliminate — "pages got persisted to temp files" — turns out to be trivial once the procedure plans for it.
+This also beats `WebFetch` on fidelity: you get source bytes, not a summarization model's paraphrase, which matters when confirming an exact event name or table row. The old guidance ("three pages trip the WebFetch output budget; narrow prompts don't help, persistence is the expected path") was accurate while it applied — it's preserved in git history if the `.md` endpoint ever disappears.
 
 ### For non-GitHub HTML pages, `curl` + `sed` + `grep` beats `WebFetch`
 

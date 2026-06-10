@@ -2,7 +2,7 @@
 
 > Who actually supports MCP, and how deep the support goes.
 
-**Last verified:** 2026-05-15
+**Last verified:** 2026-06-10
 
 MCP is a standardized protocol — servers expose tools, resources, and prompts; clients (CLIs) connect to them. "Supports MCP" is binary, but the _quality_ of support varies: which transports (stdio, HTTP, SSE), which features (tools only vs. resources + prompts), error handling, reconnect behavior.
 
@@ -20,14 +20,14 @@ Sub-agents can receive their own MCP server stack: string references share the p
 
 Docs: <https://developers.openai.com/codex/mcp>
 
-MCP servers are configured in `~/.codex/config.toml` under `[mcp_servers.*]`. Codex stores **per-tool approval overrides** directly in the same table:
+MCP servers are configured in `~/.codex/config.toml` under `[mcp_servers.*]` — or, new since the 2026-05-15 refresh, in a project-scoped `.codex/config.toml` (trusted projects only) or via the `codex mcp` CLI (`codex mcp add <name> ... stdio <command>`). Supported transports are stdio and streamable HTTP. Codex stores **per-tool approval overrides** directly in the same table:
 
 ```toml
 [mcp_servers.docs.tools.search]
 approval_mode = "approve"
 ```
 
-This is tighter per-tool scoping than Claude Code's permission rules — you approve or deny at the individual tool level, not just the server level. The tradeoff is you edit TOML instead of using a CLI, and there's no documented way to scope MCP servers to a specific sub-agent.
+This is tighter per-tool scoping than Claude Code's permission rules — you approve or deny at the individual tool level (`tools.<tool>.approval_mode`, with `enabled_tools` / `disabled_tools` allow/deny lists and a `default_tools_approval_mode` of `auto` / `prompt` / `approve`), not just the server level. The two tradeoffs this page used to flag have both closed: `codex mcp` now manages servers from the CLI, and custom-agent TOML files accept an `mcp_servers` field, scoping servers to a specific sub-agent the way Claude Code's `mcpServers:` frontmatter does.
 
 ## Gemini CLI
 
