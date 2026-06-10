@@ -71,7 +71,7 @@ This expands to `npm run lint && npm run format:check && npm run check:links`. T
 
 ## Workflows
 
-**Refresh the matrix (the main recurring task):** Invoke the `/refresh` skill. With no arg it re-verifies all tier-1 tools; with an arg like `/refresh gemini-cli` it scopes to one tool. `/refresh` always proposes a diff for human approval — it never edits silently.
+**Refresh the matrix (the main recurring task):** Invoke the `/refresh` skill. With no arg it re-verifies all tier-1 tools; with an arg like `/refresh antigravity-cli` it scopes to one tool. `/refresh` always proposes a diff for human approval — it never edits silently.
 
 **Refresh cadence:** Target a full `/refresh` run every ~3 months. Any row whose "Last verified" date is older than 90 days is stale — that's the signal to re-run. Also refresh sooner when a vendor ships a major release, or when a canonical URL in `.claude/skills/refresh/SKILL.md` starts returning 404s. No automation by design: see `specs/plan.md` M3 for the rationale. The maintainer is expected to read this section when starting a session.
 
@@ -85,7 +85,7 @@ This expands to `npm run lint && npm run format:check && npm run check:links`. T
 - **Dated claims.** Every column and every deep-dive page has a `Last verified:` line. Bump it when you re-verify, even if nothing changed.
 - **Checkmarks in cells, nuance in prose.** The matrix says ✅ / 🟡 / ❌ / ⏳. Anything requiring explanation goes in `docs/*.md`.
 - **Reference-style links, not GitHub footnotes.** Primary-source citations in `README.md`'s matrix use reference-style links (`[✅][cx-plan]` in the cell + `[cx-plan]: url "description"` at the bottom of the file). Do **not** use GitHub footnote syntax (`[^name]`) — VSCode's markdown preview doesn't render footnotes, so the raw marker leaks into the rendered output. The link `title` attribute doubles as a hover tooltip.
-- **Tier 1 is privileged.** Claude Code, Codex CLI, Gemini CLI are the three columns in `README.md`. Tier 2 tools only appear in deep-dive prose, never as matrix columns — otherwise the matrix becomes unmaintainable.
+- **Tier 1 is privileged.** Claude Code, Codex CLI, Antigravity CLI (which replaced Gemini CLI on 2026-06-10 ahead of its consumer sunset) are the three columns in `README.md`. Tier 2 tools only appear in deep-dive prose, never as matrix columns — otherwise the matrix becomes unmaintainable.
 - **Vendor PRs are tagged.** PRs from vendors are accepted but labeled `vendor-unverified` until a maintainer re-runs `/refresh` on the affected row.
 
 ## Testing Conventions

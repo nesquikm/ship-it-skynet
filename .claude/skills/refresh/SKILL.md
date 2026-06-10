@@ -67,7 +67,17 @@ GitHub repo (README, changelog, version):
 - Repo: `https://github.com/openai/codex` — README and `/CHANGELOG.md`
 - Latest release: `gh api repos/openai/codex/releases/latest` — `tag_name` is the authoritative version string, `published_at` is the authoritative publish date. The npm package page is intentionally not listed here: it returns 403 to `WebFetch`, so the GitHub Release API is the reliable source for version signals.
 
-### Gemini CLI (`@google/gemini-cli`)
+### Antigravity CLI (`agy`) — successor to Gemini CLI, migrated 2026-06-10
+
+**Primary sources — the official GitHub repo (preferred; the docs site is not crawlable):**
+
+- Repo: `https://github.com/google-antigravity/antigravity-cli` — officialness established by the transition blog linking it directly. README (features/integration/auth) and `CHANGELOG.md` are the cell-level primary sources; fetch via `gh api repos/google-antigravity/antigravity-cli/contents/{path} -H "Accept: application/vnd.github.raw"`.
+- Latest release: `gh api repos/google-antigravity/antigravity-cli/releases/latest` — `tag_name` / `published_at`, same pattern as the other tools.
+- Transition blog: `https://developers.googleblog.com/an-important-update-transitioning-gemini-cli-to-antigravity-cli/` — the only source for "Skills, Hooks, Subagents, Extensions preserved" claims; treat as announcement-grade (⏳ in cells) until repo or docs corroborate.
+
+> **Note (2026-06-10):** `antigravity.google` is a JS-rendered SPA with a catch-all route — every path returns the same 22 KB shell (HTTP 200) rendering to no visible text, `.md` suffixes and `llms.txt` 404, and the sitemap (26 URLs) lists no CLI doc pages. Do **not** cite `antigravity.google/docs/*` for cell-level claims until it server-renders; re-probe each refresh (`curl --compressed` — the server gzips unconditionally). Five matrix cells are ⏳ for exactly this reason: plan mode, agent teams, hooks, web search, checkpoints/rewind.
+
+### Gemini CLI (`@google/gemini-cli`) — predecessor, enterprise-only after 2026-06-18
 
 **Primary source — `geminicli.com/docs/` (preferred; check this first):**
 

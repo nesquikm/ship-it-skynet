@@ -74,7 +74,13 @@ Two features narrow the gap slightly but don't cross it:
 
 No `TeammateIdle` equivalent, no shared mailbox, no "Agent Teams" page in the docs. In the matrix this is a clean `❌` on the Agent teams row despite a clean `✅` on the Sub-agents row.
 
-## Gemini CLI
+## Antigravity CLI (successor to Gemini CLI)
+
+Sources: [repo CHANGELOG](https://github.com/google-antigravity/antigravity-cli/blob/main/CHANGELOG.md) and the [transition blog](https://developers.googleblog.com/an-important-update-transitioning-gemini-cli-to-antigravity-cli/) — `antigravity.google/docs` is not yet crawlable.
+
+Subagents ship: the changelog shows per-subagent interaction timeouts distinct from the main agent (1.0.2), subagent conversations tracked separately and filtered out of `/resume` (1.0.6), and specialized agents auto-discovered from installed plugins (1.0.1). The transition blog names Subagents as preserved from Gemini CLI, and — more interestingly for the Agent-teams row — pitches Antigravity on "multiple agents communicating with each other to split up the work" with background orchestration of multiple agents. Whether that means real peer messaging and a shared task list (an agent-teams model) or parent-brokered fan-out (a Codex-style hierarchy) is exactly what no published source yet answers, so the matrix keeps Sub-agents at ✅ and Agent teams at ⏳ rather than guessing. Definition format, invocation surface, and recursion rules: all pending docs.
+
+### Predecessor: Gemini CLI (consumer sunset 2026-06-18; enterprise still served)
 
 Docs: <https://geminicli.com/docs/core/subagents/> and <https://geminicli.com/docs/core/remote-agents/>
 
@@ -82,7 +88,7 @@ User-definable sub-agents live in `.gemini/agents/*.md` (project) or `~/.gemini/
 
 Built-in agents: `codebase_investigator` (codebase analysis), `cli_help` (CLI documentation lookup), `generalist` (all-tools helper for complex multi-step tasks), and `browser_agent` (web automation, experimental and disabled by default). Discovery tiers are workspace > user > extension.
 
-The Gemini sub-agent model is deliberately non-recursive: _"subagents cannot call other subagents. If a subagent is granted the `*` tool wildcard, it will still be unable to see or invoke other agents."_ There is no shared task list, no inter-agent messaging, and no `SubagentStart` / `SubagentStop` hook in the 11-event hook catalog. That lands Gemini at `✅` on the Sub-agents row and a clean `❌` on the Agent teams row.
+The Gemini sub-agent model is deliberately non-recursive: _"subagents cannot call other subagents. If a subagent is granted the `*` tool wildcard, it will still be unable to see or invoke other agents."_ There is no shared task list, no inter-agent messaging, and no `SubagentStart` / `SubagentStop` hook in the 11-event hook catalog. That landed Gemini at `✅` on the Sub-agents row and a clean `❌` on the Agent teams row while it held the matrix column (through 2026-06-10).
 
 **Remote agents** (`geminicli.com/docs/core/remote-agents/`) are a separate feature and don't change the Agent teams row. They use the same `.gemini/agents/*.md` location but specify an `agent_card_url` (or inline `agent_card_json`) pointing at an external service that speaks the Agent-to-Agent (A2A) protocol. Gemini CLI acts as a client delegating tasks unidirectionally; there is no peer-to-peer messaging between remote agents, no shared task list, and no lead/teammate relationship. Supported auth schemes include API keys, OAuth 2.0, Google credentials, and HTTP Basic.
 
@@ -90,10 +96,10 @@ The Gemini sub-agent model is deliberately non-recursive: _"subagents cannot cal
 
 - Has Claude Code's `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS` flag been retired? If Agent Teams goes GA, the matrix cell moves from `🟡 experimental` to `✅` and this deep-dive should drop the flag requirement.
 - Has Codex added anything resembling a shared task list, peer messaging, or a dedicated teams page? The `/codex/subagents` page is where it would land first.
-- Has Gemini CLI added peer messaging, a shared task list, or recursive sub-agent spawning? Those would land at `geminicli.com/docs/core/subagents/` (changes to the recursion guard) or a new `agent-teams/` page. Any such shift would flip the Agent teams cell.
+- Has Antigravity CLI published anything that settles its Agent-teams cell? The transition blog's "multiple agents communicating with each other" language could mean peer coordination or plain hierarchy — watch the repo CHANGELOG and `antigravity.google/docs` for the first technical description of multi-agent orchestration; that's the trigger to move the ⏳.
 - Do any new events join Claude Code's hook catalog under the Team\* namespace? The existing set is `TeammateIdle`, `TaskCreated`, `TaskCompleted`; additions belong in the Claude Code section above.
 - Are the command `/resume` + in-process-teammates limitations still open? Each limitation in the list above is worth re-checking on every refresh, since the feature is experimental by Anthropic's own label.
-- Have Gemini CLI sub-agent hooks (e.g. `SubagentStart`/`SubagentStop`) landed? The hook catalog at `geminicli.com/docs/hooks/` is the source of truth for this.
+- Has Antigravity CLI published a hook catalog (and does it include subagent lifecycle events)? Nothing fetchable documents `agy` hooks yet. For the enterprise-only Gemini CLI predecessor, `geminicli.com/docs/hooks/` remains the source of truth (no `SubagentStart`/`SubagentStop` as of 2026-06-10).
 
 ## Why this deserved its own page
 

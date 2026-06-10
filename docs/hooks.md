@@ -13,7 +13,7 @@ If a hook can be silently skipped, it's not a gate — it's a suggestion. A pre-
 **Short answer for the three tier-1 tools:**
 
 - **Claude Code:** yes, bet the pipeline. Full lifecycle with blocking `PreToolUse`.
-- **Gemini CLI:** yes, bet the pipeline. Full lifecycle with blocking `BeforeTool` and rewritable tool input.
+- **Antigravity CLI:** unknown. Hooks are announced as preserved from Gemini CLI, but no event catalog or blocking semantics have been published anywhere fetchable. The predecessor Gemini CLI was a clear "yes, bet the pipeline" (full lifecycle, blocking `BeforeTool`, rewritable tool input) — an answer that remains valid for enterprise users still on Gemini CLI.
 - **Codex CLI:** partially. `PreToolUse` and `PermissionRequest` intercept Bash, `apply_patch` (with `Edit` / `Write` matcher aliases), and MCP tool calls, with structured `allow` / `deny` decisions — and `PreToolUse` can now rewrite tool input via `updatedInput`, closing what used to be a Gemini-only capability. Coverage still doesn't extend to `WebSearch` or the streaming `unified_exec` shell mechanism, and the docs explicitly call hooks "a guardrail rather than a complete enforcement boundary because Codex can often perform equivalent work through another supported tool path." Not yet a deterministic CI-pipeline gate.
 
 ## Claude Code
@@ -44,7 +44,11 @@ Docs: <https://developers.openai.com/codex/hooks> (primary) and <https://develop
 
 This means Codex CLI _partially_ passes the "can I bet a CI pipeline on this?" test — you can enforce denylists and rewrite arguments across Bash, `apply_patch`, and MCP tool calls, plus reject approval requests at `PermissionRequest` time, but not a comprehensive trust boundary. For deterministic enforcement across every tool, you still need to run gates outside Codex (git pre-commit hooks, CI), the same as before. Each refresh narrows the gap; the `unified_exec` / `WebSearch` bypass keeps it open.
 
-## Gemini CLI
+## Antigravity CLI (successor to Gemini CLI)
+
+Sources: the [transition blog](https://developers.googleblog.com/an-important-update-transitioning-gemini-cli-to-antigravity-cli/) names Hooks as one of the four Gemini CLI features Antigravity CLI preserves. That is currently the **entire** published hooks story: the [repo CHANGELOG](https://github.com/google-antigravity/antigravity-cli/blob/main/CHANGELOG.md) (through v1.0.7) never mentions hook events, and `antigravity.google/docs` is a JS-rendered SPA we can't cite. Event catalog, matchers, blocking semantics, input rewriting, fingerprinting — all unknown. Until Google ships docs, the matrix cell stays ⏳ and the CI-pipeline question has no answer for `agy`.
+
+### Predecessor: Gemini CLI (consumer sunset 2026-06-18; enterprise still served)
 
 Docs: <https://geminicli.com/docs/hooks/> and <https://geminicli.com/docs/hooks/reference/>
 
@@ -66,4 +70,4 @@ Environment variables in hook scripts: `GEMINI_PROJECT_DIR`, `GEMINI_SESSION_ID`
 
 ## Regression watch
 
-The Claude Code `↔` Gemini CLI parity is new as of the 2026-04-11 refresh. Codex CLI keeps converging — by 2026-06-10 it had sub-agent lifecycle events, compaction events, hooks on by default, and `updatedInput` rewriting, leaving only one structural difference — but that difference is the load-bearing one: enforcement is still model-bypassable (no `unified_exec`, no `WebSearch` interception), so you still can't wire a comprehensive pre-tool gate.
+The Claude Code `↔` Gemini CLI parity held from the 2026-04-11 refresh until the Gemini column retired on 2026-06-10; whether Antigravity CLI restores that parity is now the biggest open question on this page — hooks are announced but entirely undocumented. Codex CLI keeps converging — by 2026-06-10 it had sub-agent lifecycle events, compaction events, hooks on by default, and `updatedInput` rewriting, leaving only one structural difference — but that difference is the load-bearing one: enforcement is still model-bypassable (no `unified_exec`, no `WebSearch` interception), so you still can't wire a comprehensive pre-tool gate.

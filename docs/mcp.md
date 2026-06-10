@@ -29,7 +29,13 @@ approval_mode = "approve"
 
 This is tighter per-tool scoping than Claude Code's permission rules — you approve or deny at the individual tool level (`tools.<tool>.approval_mode`, with `enabled_tools` / `disabled_tools` allow/deny lists and a `default_tools_approval_mode` of `auto` / `prompt` / `approve`), not just the server level. The two tradeoffs this page used to flag have both closed: `codex mcp` now manages servers from the CLI, and custom-agent TOML files accept an `mcp_servers` field, scoping servers to a specific sub-agent the way Claude Code's `mcpServers:` frontmatter does.
 
-## Gemini CLI
+## Antigravity CLI (successor to Gemini CLI)
+
+Sources: [repo CHANGELOG](https://github.com/google-antigravity/antigravity-cli/blob/main/CHANGELOG.md) — `antigravity.google/docs` is not yet crawlable.
+
+MCP support is real and shipping: servers are configured in `config/mcp_config.json` (a TUI bug fix in 1.0.3 confirms the path migrated from a legacy top-level `mcp_config.json`), with `url`-based servers supported alongside stdio (1.0.5), a configurable launch timeout — `-1` disables it (1.0.7) — parallelized server initialization so one slow server can't block the rest (1.0.4), and per-server disable from the TUI (1.0.3). Not yet documented: tool-name patterns, per-tool permissioning, resources/prompts support, and whether MCP servers can scope to a subagent.
+
+### Predecessor: Gemini CLI (consumer sunset 2026-06-18; enterprise still served)
 
 Docs: <https://geminicli.com/docs/tools/mcp-server/> (canonical MCP reference) and <https://geminicli.com/docs/hooks/reference/> (MCP tool naming inside hook matchers), plus the extensions system.
 
