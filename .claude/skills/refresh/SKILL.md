@@ -43,24 +43,28 @@ Authoritative secondary:
 
 ### Codex CLI (`@openai/codex`)
 
-Primary source — developers site (preferred; check this first):
+Primary source — `learn.chatgpt.com` (preferred; check this first). **Domain migration (found 2026-07-11):** the entire Codex docs tree moved off developers.openai.com — every old `/codex/*` URL 301s to learn.chatgpt.com and the tree was reorganized. Cite learn.chatgpt.com URLs in the matrix.
 
-- Features: `https://developers.openai.com/codex/cli/features`
-- Skills: `https://developers.openai.com/codex/skills`
-- Slash commands: `https://developers.openai.com/codex/cli/slash-commands`
-- Agent approvals & security: `https://developers.openai.com/codex/agent-approvals-security`
-- AGENTS.md guide: `https://developers.openai.com/codex/guides/agents-md`
-- Hooks: `https://developers.openai.com/codex/hooks` _(bare path — not under `/cli/`; `codex/cli/hooks` 404s)_
-- Plugins overview: `https://developers.openai.com/codex/plugins`
-- **Plugins — Build (authoritative for marketplace semantics):** `https://developers.openai.com/codex/plugins/build` _(the `/plugins` page describes installation only; `codex plugin marketplace add` argument types, manifest shape, and self-serve catalog rules live on `/build`. Any matrix claim about Codex marketplace flexibility must check this page — the 2026-05-15 run found Codex plugins flip from 🟡 to ✅ here.)_
-- Subagents: `https://developers.openai.com/codex/subagents` (concepts) and `https://developers.openai.com/codex/cli/subagents` if it exists; check both
-- MCP: `https://developers.openai.com/codex/mcp` _(canonical — replaces the old `github.com/openai/codex/blob/main/docs/config.md` link, which is now a 15-line redirect stub)_
-- IDE extension: `https://developers.openai.com/codex/ide`
-- Config (basic / advanced / reference): `https://developers.openai.com/codex/config-basic`, `/codex/config-advanced` _(legacy `notify` hook lives here)_, `/codex/config-reference`
+- CLI landing: `https://learn.chatgpt.com/docs/codex/cli` _(quickstart-card marketing landing — do NOT cite for cell-level claims; the old `codex/cli/features` page redirects here and no longer substantiates feature hover texts)_
+- Skills: `https://learn.chatgpt.com/docs/build-skills`
+- Developer commands (slash commands + CLI flags, merged into one page): `https://learn.chatgpt.com/docs/developer-commands`
+- Agent approvals & security: `https://learn.chatgpt.com/docs/agent-approvals-security`
+- AGENTS.md guide: `https://learn.chatgpt.com/docs/agent-configuration/agents-md`
+- Hooks: `https://learn.chatgpt.com/docs/hooks` _(includes the hook-trust / hash-pinning flow)_
+- Plugins overview: `https://learn.chatgpt.com/docs/plugins`
+- **Plugins — Build (authoritative for marketplace semantics):** `https://learn.chatgpt.com/docs/build-plugins` _(the `/plugins` page describes installation only; marketplace argument types, manifest shape, and catalog rules live here — the 2026-05-15 run found Codex plugins flip from 🟡 to ✅ on this content.)_
+- Subagents: `https://learn.chatgpt.com/docs/agent-configuration/subagents`
+- MCP: `https://learn.chatgpt.com/docs/extend/mcp`
+- Web search: `https://learn.chatgpt.com/docs/web-search`
+- Non-interactive mode (headless `codex exec`): `https://learn.chatgpt.com/docs/non-interactive-mode`
+- IDE extension: `https://learn.chatgpt.com/docs/codex/ide`
+- Config (basic / advanced / reference): `https://learn.chatgpt.com/docs/config-file/config-basic`, `/docs/config-file/config-advanced` _(legacy `notify` hook lives here)_, `/docs/config-file/config-reference`
 
-> **Note:** `github.com/openai/codex/docs/*.md` files are mostly one-line redirect stubs pointing at the developers site. Check the developers site first; use the GitHub repo only for README, CHANGELOG, and version signals.
+> **Fetching (2026-07-11):** learn.chatgpt.com serves raw markdown twins at `/docs/<slug>.md` (e.g. `https://learn.chatgpt.com/docs/hooks.md`) and a machine index at `https://learn.chatgpt.com/docs/llms.txt` — the same upgrade Claude Code got. The curl+sed HTML-stripping pattern is obsolete for Codex. Caveats: the docs are now ChatGPT-flavored (desktop-app features interleaved — check claims are CLI-applicable), and the `.md` twins for interactive landing pages (`codex/cli.md`, `codex/ide.md`) are stubs.
 >
-> **Note (2026-05-15):** The developers.openai.com site nav has expanded with new concept pages — **Memories**, **Chronicle**, **Sandboxing**, **Auto-review**, **Subagents**, **Workflows**, **Plugins** — that didn't exist on prior runs. None of these introduce new matrix _rows_ (they refine concepts already covered), but if a future row addition touches one of those areas, the corresponding `/codex/<topic>` URL is the canonical source. Sandboxing details still live on the `agent-approvals-security` page.
+> **Note:** `github.com/openai/codex/docs/*.md` files are mostly one-line redirect stubs pointing at the docs site. Check the docs site first; use the GitHub repo only for README, CHANGELOG, and version signals.
+>
+> **Note (2026-05-15, URLs updated 2026-07-11):** The docs-site nav had already expanded with concept pages — **Memories**, **Chronicle**, **Sandboxing**, **Auto-review**, **Subagents**, **Workflows**, **Plugins** — and the 2026-07-11 run found more (**Rules**, **Permission profiles**, **Worktrees** — the last is explicitly desktop-app-only). None of these introduce new matrix _rows_ (they refine concepts already covered), but if a future row addition touches one of those areas, look the topic up in `learn.chatgpt.com/docs/llms.txt` for the canonical page. Sandboxing details live on `agent-approvals-security` plus a dedicated `/docs/sandboxing` section.
 
 GitHub repo (README, changelog, version):
 
@@ -69,13 +73,21 @@ GitHub repo (README, changelog, version):
 
 ### Antigravity CLI (`agy`) — successor to Gemini CLI, migrated 2026-06-10
 
-**Primary sources — the official GitHub repo (preferred; the docs site is not crawlable):**
+**Primary sources — the official docs (fetchable as of 2026-07-11) plus the official GitHub repo:**
+
+- Docs index: `https://antigravity.google/llms.txt` — has a dedicated "Antigravity CLI" section.
+- Raw markdown content: `https://antigravity.google/assets/docs/<path>/<filename>.md` — the SPA's own fetch path. Filenames come from the doc manifest in the SPA's JS bundle and **differ from URL slugs**: `/docs/cli/modes` → `/assets/docs/cli/cli-modes.md`, `/docs/hooks` → `/assets/docs/antigravity-2-0/hooks.md`. Cite the human `/docs/...` URL in link refs; fetch the `/assets/docs/...` file for verification.
+- Key pages (rendered slug → raw asset path): `cli/modes` → `cli/cli-modes.md`; `cli/features` → `cli/cli-features.md`; `cli/conversations` → `cli/cli-conversations.md`; `cli/plugins` (also covers CLI skills) → `cli/cli-plugins.md`; `cli/sandbox` → `cli/cli-sandbox.md`; `cli/permissions` → `cli/cli-permissions.md`; `cli/reference` → `cli/cli-reference.md`; `cli/gcli-migration` → `cli/gcli-migration.md`; `cli/commands/agents` → `cli/commands/agents.md`; `hooks` → `antigravity-2-0/hooks.md`; `subagents` → `antigravity-2-0/subagents.md`; `mcp` → `antigravity-2-0/mcp.md`; `skills` → `antigravity-2-0/skills.md`; `permissions` → `antigravity-2-0/permissions.md`; `rules-workflows` → `antigravity-2-0/rules-workflows.md`.
+- **WARNING:** the SPA returns HTTP 200 for ANY path (catch-all route), so a 200 on a `/docs/...` URL proves nothing — only cite slugs present in `llms.txt` or the JS bundle's `DOCS_STRUCTURE`. Known quirks: `/docs/cli/modes` is real but missing from `llms.txt`; there is NO `/docs/cli/skills` page (CLI skills live under `/docs/cli/plugins`). The `antigravity-2-0/*` pages are shared platform docs — confirm CLI applicability (the hooks doc's `~/.gemini/antigravity-cli` data-dir note is the tell) before citing them for CLI claims.
+- Scope docs vs. CLI docs disagree in places (e.g. flat-`.md` skills in the CLI doc vs `SKILL.md` folders in the platform doc; `/docs/cli/reference` still listing `/fast` and `/planning` although `/docs/cli/modes` says both were removed in 1.1.0) — prefer the CLI-specific page and note discrepancies in the refresh report.
+
+**GitHub repo (README, CHANGELOG, version signals):**
 
 - Repo: `https://github.com/google-antigravity/antigravity-cli` — officialness established by the transition blog linking it directly. README (features/integration/auth) and `CHANGELOG.md` are the cell-level primary sources; fetch via `gh api repos/google-antigravity/antigravity-cli/contents/{path} -H "Accept: application/vnd.github.raw"`.
 - Latest release: `gh api repos/google-antigravity/antigravity-cli/releases/latest` — `tag_name` / `published_at`, same pattern as the other tools.
 - Transition blog: `https://developers.googleblog.com/an-important-update-transitioning-gemini-cli-to-antigravity-cli/` — the only source for "Skills, Hooks, Subagents, Extensions preserved" claims; treat as announcement-grade (⏳ in cells) until repo or docs corroborate.
 
-> **Note (2026-06-10):** `antigravity.google` is a JS-rendered SPA with a catch-all route — every path returns the same 22 KB shell (HTTP 200) rendering to no visible text, `.md` suffixes and `llms.txt` 404, and the sitemap (26 URLs) lists no CLI doc pages. Do **not** cite `antigravity.google/docs/*` for cell-level claims until it server-renders; re-probe each refresh (`curl --compressed` — the server gzips unconditionally). Five matrix cells are ⏳ for exactly this reason: plan mode, agent teams, hooks, web search, checkpoints/rewind.
+> **Note (2026-07-11, supersedes the 2026-06-10 blackout note):** the docs blackout is over. `antigravity.google` still client-renders every `/docs/*` page (the shells are content-free HTML), but it now publishes `llms.txt` and serves raw doc markdown under `/assets/docs/` (see the primary-sources list above). Always `curl --compressed` — the server gzips unconditionally. `.md` suffixes on `/docs/...` URLs and `llms-full.txt` still 404. The five formerly-⏳ cells (plan mode, agent teams, hooks, web search, checkpoints/rewind) were resolved from these sources on 2026-07-11.
 
 ### Gemini CLI (`@google/gemini-cli`) — predecessor, enterprise-only after 2026-06-18
 
@@ -137,23 +149,31 @@ Procedure:
 
 This also beats `WebFetch` on fidelity: you get source bytes, not a summarization model's paraphrase, which matters when confirming an exact event name or table row. The old guidance ("three pages trip the WebFetch output budget; narrow prompts don't help, persistence is the expected path") was accurate while it applied — it's preserved in git history if the `.md` endpoint ever disappears.
 
-### For non-GitHub HTML pages, `curl` + `sed` + `grep` beats `WebFetch`
+### Codex docs serve raw markdown too — curl the `.md` twin on learn.chatgpt.com
 
-`developers.openai.com/codex/*` and `geminicli.com/docs/*` pages run 90 KB–290 KB of HTML. `WebFetch` reliably trips its output budget on the larger ones, and the summarization model rewrites whatever it does return — fine when you trust the model, painful when you need to confirm a specific event name, matcher value, or table cell verbatim.
+Since the mid-2026 domain migration (found 2026-07-11), every `learn.chatgpt.com/docs/<slug>` page has a raw-markdown twin at `learn.chatgpt.com/docs/<slug>.md`, and `learn.chatgpt.com/docs/llms.txt` is the machine index. Same procedure as Claude Code: curl the `.md` endpoints in parallel, grep locally. The curl+sed HTML-stripping pattern below is obsolete for Codex.
+
+### Antigravity docs: fetch `/assets/docs/`, cite `/docs/`
+
+See the Antigravity canonical-sources section: verify claims against the raw markdown at `antigravity.google/assets/docs/<path>/<filename>.md` (with `--compressed`), cite the rendered `/docs/...` URL in link refs. Never trust an HTTP 200 from the SPA as evidence a page exists.
+
+### For remaining non-GitHub HTML pages, `curl` + `sed` + `grep` beats `WebFetch`
+
+`geminicli.com/docs/*` pages run 90 KB–290 KB of HTML. `WebFetch` reliably trips its output budget on the larger ones, and the summarization model rewrites whatever it does return — fine when you trust the model, painful when you need to confirm a specific event name, matcher value, or table cell verbatim.
 
 The faster pattern is `curl -sL <url> -o /tmp/<slug>.html`, then strip the chrome and pipe to `grep` for the keywords you care about. Concretely:
 
 ```bash
-curl -sL https://developers.openai.com/codex/hooks -o /tmp/cx-hooks.html
-grep -A 2000 '<article' /tmp/cx-hooks.html \
+curl -sL https://geminicli.com/docs/hooks/ -o /tmp/gm-hooks.html
+grep -A 2000 '<article' /tmp/gm-hooks.html \
   | sed -E 's/<[^>]+>/ /g; s/&nbsp;/ /g; s/  +/ /g' \
   | tr -s '\n' \
   | grep -E '^.{15,}'
 ```
 
-You can fan out the curl calls in parallel (one Bash tool call per URL in the same message), then grep each cached file independently. The whole tier-1 fetch phase ran in well under a minute on 2026-04-27 this way, and surfaced the verbatim text of the Codex hooks event table — including the `PermissionRequest` event that was missing from the matrix.
+You can fan out the curl calls in parallel (one Bash tool call per URL in the same message), then grep each cached file independently. This pattern surfaced the verbatim Codex hooks event table on 2026-04-27 (including the then-missing `PermissionRequest` event), back when the Codex docs were still HTML-only.
 
-Use this for `developers.openai.com/codex/*`, `geminicli.com/docs/*`, and any other non-GitHub HTML doc. Keep `gh api` for GitHub-hosted markdown (it's already raw), and `WebFetch` for cases where you genuinely want a model summary rather than the source bytes.
+Use this for `geminicli.com/docs/*` and any other non-GitHub HTML doc without a raw-markdown endpoint. Keep `gh api` for GitHub-hosted markdown (it's already raw), and `WebFetch` for cases where you genuinely want a model summary rather than the source bytes.
 
 ### For Gemini CLI, prefer `geminicli.com/docs/` over the GitHub repo
 
