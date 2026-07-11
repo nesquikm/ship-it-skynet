@@ -4,7 +4,7 @@ Half the confusion between these tools is that "agent" means five different thin
 
 **Format:** neutral term → what each vendor calls it → short definition.
 
-**Last updated:** 2026-07-11
+**Last updated:** 2026-07-12
 
 > **Migration note (2026-06-10):** the Gemini CLI rows below were replaced by Antigravity CLI (`agy`), its announced successor, ahead of Gemini CLI's 2026-06-18 consumer sunset. Antigravity visibly inherits Gemini conventions (`~/.gemini/` paths, extension variables). The rows initially carried "pending docs" caveats because only the [official repo](https://github.com/google-antigravity/antigravity-cli) was citable; since 2026-07-11 the official docs at antigravity.google are fetchable (llms.txt index + raw markdown pages) and the rows below cite them. The pre-migration Gemini CLI rows are preserved in git history and remain accurate for enterprise users of the predecessor.
 
@@ -71,6 +71,16 @@ A read-only mode where the agent explores and proposes a plan without making cha
 | Claude Code     | plan mode | `permissionMode: "plan"` or in-session toggle                                                     |
 | Codex CLI       | Plan mode | `/plan [prompt]` or `plan_mode_reasoning_effort` in config.toml                                   |
 | Antigravity CLI | plan mode | `/plan` prompt prefix, `Shift+Tab` mode cycling, `--mode=plan` flag, `agentMode` in settings.json |
+
+### Background / scheduled task _(neutral)_
+
+Work the CLI runs outside the current conversational turn — concurrently in the session (background) or on a timer (scheduled).
+
+| Vendor          | Term                         | Notes                                                                                                                                                                                             |
+| --------------- | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Claude Code     | background / scheduled task  | `/tasks` lists background shells and subagents (attach/stop); `/loop` + `CronCreate`/`CronList`/`CronDelete` for session-scoped cron; `/schedule` manages persistent cloud routines               |
+| Codex CLI       | scheduled task ("Scheduled") | Runs in ChatGPT (web Work or desktop app), not the CLI; desktop app can use local projects and worktrees; plugins bundle scheduled-task templates. Subagents run as background threads in the CLI |
+| Antigravity CLI | background task              | `/tasks` panel (monitor, view logs, terminate); `manage_task` tool (list/kill/status/send_input); `schedule` tool takes timers or recurring cron expressions                                      |
 
 ---
 
