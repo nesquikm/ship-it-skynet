@@ -2,7 +2,7 @@
 
 > How each CLI lets you package reusable procedures.
 
-**Last verified:** 2026-07-11
+**Last verified:** 2026-07-25
 
 A "skill" in the neutral sense is a reusable, named procedure the agent can invoke on demand — distinct from a slash command in that the model can decide to trigger it based on a description, not only the user.
 
@@ -25,7 +25,7 @@ Unique surface area (some of the richest frontmatter in the tier-1 set):
 
 ## Codex CLI
 
-Docs: <https://learn.chatgpt.com/docs/build-skills> (moved from developers.openai.com; old URL redirects)
+Docs: <https://developers.openai.com/codex/build-skills> (back on developers.openai.com after a mid-2026 detour through learn.chatgpt.com; both hosts mirror the same content)
 
 Skills live in `.agents/skills/<name>/SKILL.md` at the repo root (or any parent), `$HOME/.agents/skills/` for user-level, `/etc/codex/skills/` for admin, plus OpenAI-bundled skills. Same frontmatter (`name`, `description`) plus an optional `agents/openai.yaml` for UI configuration.
 
@@ -36,7 +36,7 @@ Activation:
 
 ## Antigravity CLI (successor to Gemini CLI)
 
-Docs: <https://antigravity.google/docs/cli/plugins> (CLI skills) and <https://antigravity.google/docs/skills> (platform `SKILL.md` standard) — both fetchable as raw markdown since 2026-07-11.
+Docs: <https://antigravity.google/docs/cli/plugins> (CLI skills) and <https://antigravity.google/docs/skills> (platform `SKILL.md` standard) — both server-rendered HTML as of 2026-07-25 (the raw-markdown asset path used on 2026-07-11 was retired).
 
 Antigravity documents **two coexisting skill formats**. The CLI doc describes workspace skills as flat `.md` files with `name`/`description` frontmatter in `.agents/skills/`, auto-converted into slash commands, with a global tier at `~/.gemini/antigravity-cli/skills/`. The platform doc separately specifies the [agentskills.io](https://agentskills.io) open standard — a folder containing a `SKILL.md` file, at `.agents/skills/<folder>/SKILL.md` (workspace) or `~/.gemini/config/skills/<folder>/` (global); `description` frontmatter is required while `name` defaults to the folder name. The [migration doc](https://antigravity.google/docs/cli/gcli-migration) maps Gemini CLI's `.gemini/skills/` to `.agents/skills/` (and global `~/.gemini/skills/` to `~/.gemini/antigravity-cli/skills/`). Still holding from the CHANGELOG era: custom and fallback skills load even in Standalone mode (1.0.2), and plugin-bundled skills are auto-discovered and made executable (1.0.1). Not documented: an `activate_skill`-style explicit tool call or a `gemini skills`-style package-manager surface — distribution goes through plugins.
 

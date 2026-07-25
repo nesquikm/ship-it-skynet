@@ -2,7 +2,7 @@
 
 > Who actually supports MCP, and how deep the support goes.
 
-**Last verified:** 2026-07-11
+**Last verified:** 2026-07-25
 
 MCP is a standardized protocol — servers expose tools, resources, and prompts; clients (CLIs) connect to them. "Supports MCP" is binary, but the _quality_ of support varies: which transports (stdio, HTTP, SSE), which features (tools only vs. resources + prompts), error handling, reconnect behavior.
 
@@ -18,7 +18,7 @@ Sub-agents can receive their own MCP server stack: string references share the p
 
 ## Codex CLI
 
-Docs: <https://learn.chatgpt.com/docs/extend/mcp> (moved from developers.openai.com; old URL redirects)
+Docs: <https://developers.openai.com/codex/extend/mcp> (back on developers.openai.com after a mid-2026 detour through learn.chatgpt.com; both hosts mirror the same content)
 
 MCP servers are configured in `~/.codex/config.toml` under `[mcp_servers.*]` — or, new since the 2026-05-15 refresh, in a project-scoped `.codex/config.toml` (trusted projects only) or via the `codex mcp` CLI (`codex mcp add <name> ... stdio <command>`). Supported transports are stdio and streamable HTTP. Codex stores **per-tool approval overrides** directly in the same table:
 
@@ -31,9 +31,9 @@ This is tighter per-tool scoping than Claude Code's permission rules — you app
 
 ## Antigravity CLI (successor to Gemini CLI)
 
-Docs: <https://antigravity.google/docs/mcp> (fetchable as raw markdown since 2026-07-11) plus the [repo CHANGELOG](https://github.com/google-antigravity/antigravity-cli/blob/main/CHANGELOG.md) for version attributions.
+Docs: <https://antigravity.google/docs/mcp> (server-rendered HTML as of 2026-07-25; the raw-markdown asset path was retired) plus the [repo CHANGELOG](https://github.com/google-antigravity/antigravity-cli/blob/main/CHANGELOG.md) for version attributions.
 
-MCP support is documented: global servers in `~/.gemini/config/mcp_config.json`, workspace servers in `.agents/mcp_config.json`. Local servers use stdio via `command`; remote servers use `serverUrl` for SSE, Streamable HTTP, or websocket — the docs mark the legacy `url` / `httpUrl` fields as not supported (though the platform changelog of 2026-06-11 re-accepts `url` as an alias, so don't assert either absolutely). There's an `/mcp` interactive manager overlay, per-server `disabledTools` lists, `mcp(server/tool)` / `mcp(server/*)` / `mcp(*)` permission rules (unconfigured MCP tools default to Ask), and OAuth / ADC / custom-header auth. From the CHANGELOG era: configurable launch timeout with `-1` to disable (1.0.7), parallelized server initialization (1.0.4), per-server disable from the TUI (1.0.3). Not yet documented: resources/prompts support and whether MCP servers can scope to a subagent.
+MCP support is documented: global servers in `~/.gemini/config/mcp_config.json`, workspace servers in `.agents/mcp_config.json`. Local servers use stdio via `command`; remote servers use `serverUrl` for SSE, Streamable HTTP, or websocket — the docs mark the legacy `url` / `httpUrl` fields as not supported (though the platform changelog of 2026-06-11 re-accepts `url` as an alias, so don't assert either absolutely). There's an `/mcp` interactive manager overlay, per-server `disabledTools` lists, `mcp(server/tool)` / `mcp(server/*)` / `mcp(*)` permission rules (unconfigured MCP tools default to Ask), and OAuth / ADC / custom-header auth. From the CHANGELOG era: configurable launch timeout with `-1` to disable (1.0.7), parallelized server initialization (1.0.4), per-server disable from the TUI (1.0.3), timeouts bounding hung servers (1.1.3), embedded-resource results surfaced instead of dropped (1.1.5), and relaxed OAuth issuer validation for nonconforming providers like Salesforce and Atlassian (1.1.7). Custom agents can scope MCP inheritance via the `inheritMcp` frontmatter field (CHANGELOG 1.1.6). Not yet documented: resources/prompts support in the MCP doc itself.
 
 ### Predecessor: Gemini CLI (consumer sunset 2026-06-18; enterprise still served)
 

@@ -43,24 +43,26 @@ Authoritative secondary:
 
 ### Codex CLI (`@openai/codex`)
 
-Primary source — `learn.chatgpt.com` (preferred; check this first). **Domain migration (found 2026-07-11):** the entire Codex docs tree moved off developers.openai.com — every old `/codex/*` URL 301s to learn.chatgpt.com and the tree was reorganized. Cite learn.chatgpt.com URLs in the matrix.
+Primary source — `developers.openai.com/codex/` (preferred; check this first). **Domain history:** the tree moved to learn.chatgpt.com in mid-2026 (found 2026-07-11), then back to developers.openai.com with a reorganized layout (found 2026-07-25). Both hosts serve byte-identical content (verified by md5 on 2026-07-25), but the machine index declares `developers.openai.com/codex/*` canonical — cite those URLs in the matrix. Reorg casualties: `developer-commands` split into `cli/slash-commands` + `cli/reference` (both slugs currently serve the same merged "Developer commands" page); marketplace semantics moved out of the Codex tree entirely (see Plugins below); `plan_mode_reasoning_effort`, `agents.max_depth`, `spawn_agents_on_csv`, and the `-i/--image` flag dropped out of the docs.
 
-- CLI landing: `https://learn.chatgpt.com/docs/codex/cli` _(quickstart-card marketing landing — do NOT cite for cell-level claims; the old `codex/cli/features` page redirects here and no longer substantiates feature hover texts)_
-- Skills: `https://learn.chatgpt.com/docs/build-skills`
-- Developer commands (slash commands + CLI flags, merged into one page): `https://learn.chatgpt.com/docs/developer-commands`
-- Agent approvals & security: `https://learn.chatgpt.com/docs/agent-approvals-security`
-- AGENTS.md guide: `https://learn.chatgpt.com/docs/agent-configuration/agents-md`
-- Hooks: `https://learn.chatgpt.com/docs/hooks` _(includes the hook-trust / hash-pinning flow)_
-- Plugins overview: `https://learn.chatgpt.com/docs/plugins`
-- **Plugins — Build (authoritative for marketplace semantics):** `https://learn.chatgpt.com/docs/build-plugins` _(the `/plugins` page describes installation only; marketplace argument types, manifest shape, and catalog rules live here — the 2026-05-15 run found Codex plugins flip from 🟡 to ✅ on this content.)_
-- Subagents: `https://learn.chatgpt.com/docs/agent-configuration/subagents`
-- MCP: `https://learn.chatgpt.com/docs/extend/mcp`
-- Web search: `https://learn.chatgpt.com/docs/web-search`
-- Non-interactive mode (headless `codex exec`): `https://learn.chatgpt.com/docs/non-interactive-mode`
-- IDE extension: `https://learn.chatgpt.com/docs/codex/ide`
-- Config (basic / advanced / reference): `https://learn.chatgpt.com/docs/config-file/config-basic`, `/docs/config-file/config-advanced` _(legacy `notify` hook lives here)_, `/docs/config-file/config-reference`
+- CLI landing: `https://developers.openai.com/codex/cli` _(`.md` twin is a stub — do NOT cite for cell-level claims)_
+- Skills: `https://developers.openai.com/codex/build-skills`
+- Slash commands + CLI flags: `https://developers.openai.com/codex/cli/slash-commands` and `https://developers.openai.com/codex/cli/reference` _(same merged content on both slugs; the global-flags table is a client-rendered component even in the `.md` twin, so flag-level claims may need the rendered page or `codex --help`)_
+- Agent approvals & security: `https://developers.openai.com/codex/agent-approvals-security` _(also hosts the web-search cache/live/indexed/disabled details and platform sandbox specifics)_
+- AGENTS.md guide: `https://developers.openai.com/codex/agent-configuration/agents-md`
+- Hooks: `https://developers.openai.com/codex/hooks` _(hook-trust flow plus the Tool coverage table — since 2026-07-25 it shows unified exec and other local function tools intercepted, hosted tools like WebSearch not)_
+- Plugins overview: `https://developers.openai.com/codex/plugins`
+- **Plugins — Build (authoritative for marketplace semantics):** `https://developers.openai.com/plugins/build/plugins` _(NOTE: outside the /codex/ tree — ChatGPT and Codex now share one universal plugin directory and one builder doc; `/codex/build-plugins` is a brief intro stub. `codex plugin marketplace add` argument types and `marketplace.json` scopes live here.)_
+- Subagents: `https://developers.openai.com/codex/agent-configuration/subagents`
+- MCP: `https://developers.openai.com/codex/extend/mcp`
+- Web search: `https://developers.openai.com/codex/web-search`
+- Image inputs: `https://developers.openai.com/codex/image-inputs`
+- Non-interactive mode (headless `codex exec`): `https://developers.openai.com/codex/non-interactive-mode`
+- IDE extension: `https://developers.openai.com/codex/ide` _(`.md` twin is a stub)_
+- Config (basic / advanced / reference): `https://developers.openai.com/codex/config-file/config-basic`, `/codex/config-file/config-advanced` _(legacy `notify` hook lives here)_, `/codex/config-file/config-reference`
+- Permission profiles (beta): `https://developers.openai.com/codex/permissions`; permission modes overview: `/codex/permission-modes`
 
-> **Fetching (2026-07-11):** learn.chatgpt.com serves raw markdown twins at `/docs/<slug>.md` (e.g. `https://learn.chatgpt.com/docs/hooks.md`) and a machine index at `https://learn.chatgpt.com/docs/llms.txt` — the same upgrade Claude Code got. The curl+sed HTML-stripping pattern is obsolete for Codex. Caveats: the docs are now ChatGPT-flavored (desktop-app features interleaved — check claims are CLI-applicable), and the `.md` twins for interactive landing pages (`codex/cli.md`, `codex/ide.md`) are stubs.
+> **Fetching (2026-07-25):** raw markdown twins exist at `developers.openai.com/codex/<slug>.md` (and identically at `learn.chatgpt.com/docs/<slug>.md`). The machine index lives at `https://learn.chatgpt.com/docs/llms.txt` — `developers.openai.com/codex/llms.txt` redirects there, and the index itself lists developers.openai.com URLs; it also advertises single-file exports (`llms-full.txt`, `codex-manual.md`). The curl+sed HTML-stripping pattern remains obsolete for Codex. Caveats: the docs are ChatGPT-flavored (desktop-app features interleaved — check claims are CLI-applicable), and the `.md` twins for interactive landing pages (`codex/cli.md`, `codex/ide.md`) are stubs.
 >
 > **Note:** `github.com/openai/codex/docs/*.md` files are mostly one-line redirect stubs pointing at the docs site. Check the docs site first; use the GitHub repo only for README, CHANGELOG, and version signals.
 >
@@ -73,13 +75,13 @@ GitHub repo (README, changelog, version):
 
 ### Antigravity CLI (`agy`) — successor to Gemini CLI, migrated 2026-06-10
 
-**Primary sources — the official docs (fetchable as of 2026-07-11) plus the official GitHub repo:**
+**Primary sources — the official docs (server-rendered HTML as of 2026-07-25) plus the official GitHub repo:**
 
-- Docs index: `https://antigravity.google/llms.txt` — has a dedicated "Antigravity CLI" section.
-- Raw markdown content: `https://antigravity.google/assets/docs/<path>/<filename>.md` — the SPA's own fetch path. Filenames come from the doc manifest in the SPA's JS bundle and **differ from URL slugs**: `/docs/cli/modes` → `/assets/docs/cli/cli-modes.md`, `/docs/hooks` → `/assets/docs/antigravity-2-0/hooks.md`. Cite the human `/docs/...` URL in link refs; fetch the `/assets/docs/...` file for verification.
-- Key pages (rendered slug → raw asset path): `cli/modes` → `cli/cli-modes.md`; `cli/features` → `cli/cli-features.md`; `cli/conversations` → `cli/cli-conversations.md`; `cli/plugins` (also covers CLI skills) → `cli/cli-plugins.md`; `cli/sandbox` → `cli/cli-sandbox.md`; `cli/permissions` → `cli/cli-permissions.md`; `cli/reference` → `cli/cli-reference.md`; `cli/gcli-migration` → `cli/gcli-migration.md`; `cli/commands/agents` → `cli/commands/agents.md`; `hooks` → `antigravity-2-0/hooks.md`; `subagents` → `antigravity-2-0/subagents.md`; `mcp` → `antigravity-2-0/mcp.md`; `skills` → `antigravity-2-0/skills.md`; `permissions` → `antigravity-2-0/permissions.md`; `rules-workflows` → `antigravity-2-0/rules-workflows.md`.
-- **WARNING:** the SPA returns HTTP 200 for ANY path (catch-all route), so a 200 on a `/docs/...` URL proves nothing — only cite slugs present in `llms.txt` or the JS bundle's `DOCS_STRUCTURE`. Known quirks: `/docs/cli/modes` is real but missing from `llms.txt`; there is NO `/docs/cli/skills` page (CLI skills live under `/docs/cli/plugins`). The `antigravity-2-0/*` pages are shared platform docs — confirm CLI applicability (the hooks doc's `~/.gemini/antigravity-cli` data-dir note is the tell) before citing them for CLI claims.
-- Scope docs vs. CLI docs disagree in places (e.g. flat-`.md` skills in the CLI doc vs `SKILL.md` folders in the platform doc; `/docs/cli/reference` still listing `/fast` and `/planning` although `/docs/cli/modes` says both were removed in 1.1.0) — prefer the CLI-specific page and note discrepancies in the refresh report.
+- Docs index: `https://antigravity.google/llms.txt` — has a dedicated "Antigravity CLI" section (plus "Antigravity 2.0", SDK, and IDE sections).
+- **Fetching (2026-07-25, supersedes the `/assets/docs/` procedure):** the raw-markdown asset path (`/assets/docs/<path>/<filename>.md`) was retired — it now 404s. The `/docs/...` pages are fully server-rendered (Astro) HTML instead of client-rendered shells, so fetch the rendered page with `curl --compressed` and strip tags with the sed pattern from [Fetching tips](#fetching-tips). Unknown paths now return real 404s, so an HTTP 200 is meaningful again. `.md` suffixes on `/docs/...` URLs and `llms-full.txt` still 404.
+- Key CLI pages: `cli/overview`, `cli/using`, `cli/features` (/rewind, /tasks, subagents framework), `cli/modes` (execution modes incl. plan), `cli/conversations` (/fork), `cli/subagents` (**new since 2026-07-11** — "Background Tasks & Subagents": /tasks panel, Alt+J teleport, Ctrl+K fast-approve), `cli/plugins` (also covers CLI skills), `cli/sandbox`, `cli/permissions`, `cli/settings`, `cli/reference` (slash-command table + settings.json keys), `cli/gcli-migration`, `cli/commands/agents` (and other `cli/commands/*` pages: codesearch, credits, diff, permissions, resume, statusline, title, usage).
+- Key platform pages (shared docs that cover the CLI — confirm CLI applicability before citing, e.g. the hooks doc's `~/.gemini/antigravity-cli` data-dir note): `/docs/hooks` (events + built-in tool catalog incl. `search_web`, `schedule`, `manage_task`), `/docs/subagents` (invoke_subagent workspace options incl. `branch` git worktrees, custom-agent `.md` frontmatter, 10-level nesting cap, inter-agent messaging, /teamwork-preview), `/docs/mcp`, `/docs/skills`, `/docs/permissions`, `/docs/rules-workflows`, `/docs/plugins`.
+- Scope docs vs. CLI docs disagree in places (flat-`.md` skills in the CLI doc vs `SKILL.md` folders in the platform doc; `/docs/cli/reference` still lists `/fast` and `/planning` although `/docs/cli/modes` says both were removed in 1.1.0; the reference's slash-command table lags the CHANGELOG — `/codesearch` (1.1.3) and `/effort` (1.1.5) are missing as of 2026-07-25) — prefer the CLI-specific page and note discrepancies in the refresh report.
 
 **GitHub repo (README, CHANGELOG, version signals):**
 
@@ -87,7 +89,7 @@ GitHub repo (README, changelog, version):
 - Latest release: `gh api repos/google-antigravity/antigravity-cli/releases/latest` — `tag_name` / `published_at`, same pattern as the other tools.
 - Transition blog: `https://developers.googleblog.com/an-important-update-transitioning-gemini-cli-to-antigravity-cli/` — the only source for "Skills, Hooks, Subagents, Extensions preserved" claims; treat as announcement-grade (⏳ in cells) until repo or docs corroborate.
 
-> **Note (2026-07-11, supersedes the 2026-06-10 blackout note):** the docs blackout is over. `antigravity.google` still client-renders every `/docs/*` page (the shells are content-free HTML), but it now publishes `llms.txt` and serves raw doc markdown under `/assets/docs/` (see the primary-sources list above). Always `curl --compressed` — the server gzips unconditionally. `.md` suffixes on `/docs/...` URLs and `llms-full.txt` still 404. The five formerly-⏳ cells (plan mode, agent teams, hooks, web search, checkpoints/rewind) were resolved from these sources on 2026-07-11.
+> **Note (2026-07-25, supersedes the 2026-07-11 fetch note):** the `/assets/docs/` raw-markdown path from the 2026-07-11 run is gone (404), and the doc pages went from client-rendered shells to full server-rendered HTML — a net upgrade: `curl --compressed` + tag-stripping now works on the human URLs directly, and 404s are real. The five formerly-⏳ cells (plan mode, agent teams, hooks, web search, checkpoints/rewind) were resolved on 2026-07-11 and re-verified against the rendered pages on 2026-07-25.
 
 ### Gemini CLI (`@google/gemini-cli`) — predecessor, enterprise-only after 2026-06-18
 
@@ -149,13 +151,13 @@ Procedure:
 
 This also beats `WebFetch` on fidelity: you get source bytes, not a summarization model's paraphrase, which matters when confirming an exact event name or table row. The old guidance ("three pages trip the WebFetch output budget; narrow prompts don't help, persistence is the expected path") was accurate while it applied — it's preserved in git history if the `.md` endpoint ever disappears.
 
-### Codex docs serve raw markdown too — curl the `.md` twin on learn.chatgpt.com
+### Codex docs serve raw markdown too — curl the `.md` twin on developers.openai.com
 
-Since the mid-2026 domain migration (found 2026-07-11), every `learn.chatgpt.com/docs/<slug>` page has a raw-markdown twin at `learn.chatgpt.com/docs/<slug>.md`, and `learn.chatgpt.com/docs/llms.txt` is the machine index. Same procedure as Claude Code: curl the `.md` endpoints in parallel, grep locally. The curl+sed HTML-stripping pattern below is obsolete for Codex.
+Every `developers.openai.com/codex/<slug>` page has a raw-markdown twin at `developers.openai.com/codex/<slug>.md` (identically mirrored at `learn.chatgpt.com/docs/<slug>.md`), and `learn.chatgpt.com/docs/llms.txt` is the machine index (the `/codex/llms.txt` path redirects to it). Same procedure as Claude Code: curl the `.md` endpoints in parallel, grep locally. The curl+sed HTML-stripping pattern below is obsolete for Codex — except for client-rendered components inside `.md` twins (e.g. the CLI reference's global-flags `ConfigTable`), which need the rendered page.
 
-### Antigravity docs: fetch `/assets/docs/`, cite `/docs/`
+### Antigravity docs: curl the rendered `/docs/...` page, strip tags
 
-See the Antigravity canonical-sources section: verify claims against the raw markdown at `antigravity.google/assets/docs/<path>/<filename>.md` (with `--compressed`), cite the rendered `/docs/...` URL in link refs. Never trust an HTTP 200 from the SPA as evidence a page exists.
+Since 2026-07-25 the `/docs/...` pages are server-rendered HTML (the `/assets/docs/` raw-markdown path 404s). Fetch the human URL with `curl -s --compressed`, strip tags with the sed pattern below, and grep the text. Cite the same `/docs/...` URL in link refs. Unknown paths return real 404s now, so status codes are trustworthy again.
 
 ### For remaining non-GitHub HTML pages, `curl` + `sed` + `grep` beats `WebFetch`
 
