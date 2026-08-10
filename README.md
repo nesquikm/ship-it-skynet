@@ -74,6 +74,12 @@ Vendor PRs accepted — but flagged `claim added by vendor, not yet independentl
 
 Updating the matrix should take less than 30 minutes per refresh cycle. If it doesn't, the format is wrong, not the cadence. Run `/refresh` to re-verify one tool or all of them at once.
 
+## Related projects
+
+Not part of the matrix, and not a source for any claim in it — tooling that sits alongside these CLIs rather than competing with them.
+
+- [agent-toolkit](https://github.com/nesquikm/agent-toolkit) — Claude Code plugin marketplace for agent orchestration: spawn, watch, and chain agents across visible terminal surfaces. _(Maintained by this repo's author.)_
+
 <!-- Reference-link definitions for the matrix. Hover text is the source description; URL is the primary source. -->
 
 [cc-skills]: https://code.claude.com/docs/en/skills "Claude Code — skills live in .claude/skills/<name>/SKILL.md; follows Agent Skills open standard"
