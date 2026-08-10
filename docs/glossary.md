@@ -82,6 +82,16 @@ Work the CLI runs outside the current conversational turn — concurrently in th
 | Codex CLI       | scheduled task ("Scheduled") | Runs in ChatGPT (web Work or desktop app), not the CLI; desktop app can use local projects and worktrees; plugins bundle scheduled-task templates. Subagents run as background threads in the CLI                                                       |
 | Antigravity CLI | background task              | `/tasks` panel (monitor, view logs, terminate); `manage_task` tool (list/kill/status/send_input); `schedule` tool takes timers or recurring cron expressions                                                                                            |
 
+### Cross-session messaging _(neutral)_
+
+Independent, separately started CLI sessions discovering one another and exchanging messages directly — as opposed to a parent talking to agents it spawned.
+
+| Vendor          | Term                    | Notes                                                                                                                                                                                                                                  |
+| --------------- | ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Claude Code     | cross-session messaging | `ListAgents` + `SendMessage` tools, `/list-agents` (alias `/peers`); sessions addressed by name (`--name` / `/rename`); per-session Unix inbox socket on-machine, reply-only across machines via Remote Control; v2.1.224+, no Windows |
+| Codex CLI       | ❌ no equivalent        | Agent communication is parent-driven orchestration only; `/agent` switches the session's own agent threads                                                                                                                             |
+| Antigravity CLI | inter-agent messaging   | `send_message` (`Recipient`, `Message`) routes to parent, sub-, or peer agents by agent conversation ID within an agent tree; no documented addressing of independent CLI sessions                                                     |
+
 ---
 
 **Adding a term?** Pick a neutral name, define it in one sentence, then fill the vendor table. If one vendor doesn't have the concept at all, write `❌ no equivalent` instead of `⏳ pending`.
