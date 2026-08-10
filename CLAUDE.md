@@ -22,9 +22,11 @@ ship-it-skynet/
 │   ├── glossary.md              # Vendor-terminology map
 │   ├── skills.md                # Deep-dive: reusable procedures
 │   ├── hooks.md                 # Deep-dive: lifecycle events
-│   └── mcp.md                   # Deep-dive: Model Context Protocol
+│   ├── mcp.md                   # Deep-dive: Model Context Protocol
+│   └── sub-agents.md            # Deep-dive: delegation vs. peer coordination
 ├── CLAUDE.md                    # This file
 ├── package.json                 # Scripts + dev dependencies
+├── package-lock.json            # Pinned dependency tree
 ├── .markdownlint-cli2.jsonc     # Markdown lint config
 ├── .markdown-link-check.json    # Link checker config
 ├── .prettierrc                  # Prettier config
@@ -75,7 +77,7 @@ This expands to `npm run lint && npm run format:check && npm run check:links`. T
 
 **Refresh cadence:** Target a full `/refresh` run every ~3 months. Any row whose "Last verified" date is older than 90 days is stale — that's the signal to re-run. Also refresh sooner when a vendor ships a major release, or when a canonical URL in `.claude/skills/refresh/SKILL.md` starts returning 404s. No automation by design: see `specs/plan.md` M3 for the rationale. The maintainer is expected to read this section when starting a session.
 
-**Add a new row or column:** Edit `README.md` directly. For a new tool column, also add a row to each table in `docs/glossary.md`. For a new feature row, update `docs/{skills,hooks,mcp}.md` if the feature deserves a deep-dive.
+**Add a new row or column:** Edit `README.md` directly. For a new tool column, also add a row to each table in `docs/glossary.md`. For a new feature row, update `docs/{skills,hooks,mcp,sub-agents}.md` if the feature deserves a deep-dive.
 
 **Bugfix (broken link, typo):** Edit → `/gate-check` → commit.
 
