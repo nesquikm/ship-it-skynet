@@ -157,7 +157,34 @@ Every `developers.openai.com/codex/<slug>` page has a raw-markdown twin at `deve
 
 ### Antigravity docs: curl the rendered `/docs/...` page, strip tags
 
-Since 2026-07-25 the `/docs/...` pages are server-rendered HTML (the `/assets/docs/` raw-markdown path 404s). Fetch the human URL with `curl -s --compressed`, strip tags with the sed pattern below, and grep the text. Cite the same `/docs/...` URL in link refs. Unknown paths return real 404s now, so status codes are trustworthy again.
+Since 2026-07-25 the `/docs/...` pages are server-rendered HTML (the `/assets/docs/` raw-markdown path 404s). Fetch the human URL with `curl -s --compressed`, strip tags, and grep the text. Cite the same `/docs/...` URL in link refs. Unknown paths return real 404s now, so status codes are trustworthy again.
+
+**Do not reuse the Gemini `<article>` sed recipe below — it fails on these pages twice over** (confirmed 2026-08-19):
+
+1. Antigravity's Astro pages have **no `<article>` element**, so `grep -A 2000 '<article'` matches nothing and you get an empty file. Anchor on `<h1` instead.
+2. Dropping `<script>` / `<style>` blocks needs a pattern that spans the whole block, and BSD `sed -E` (the macOS default) has no lazy quantifier — `s/<script[^>]*>.*?<\/script>//g` dies with `RE error: repetition-operator operand invalid`. GNU sed doesn't save you either; it's line-based and these blocks span lines.
+
+Use a small Python stripper instead. This handled all 26 CLI + platform pages on 2026-08-19:
+
+```python
+# strip.py — run in the dir holding ag-raw-*.html, writes ag-*.txt
+import re, html, glob
+for f in sorted(glob.glob('ag-raw-*.html')):
+    h = open(f, encoding='utf-8', errors='replace').read()
+    h = re.sub(r'<script.*?</script>', '', h, flags=re.S)
+    h = re.sub(r'<style.*?</style>', '', h, flags=re.S)
+    m = re.search(r'<h1.*', h, flags=re.S)      # content starts at the title
+    if m:
+        h = m.group(0)
+    h = re.sub(r'</(p|div|li|h[1-6]|tr|pre|section|td|th)>', '\n', h)
+    h = re.sub(r'<[^>]+>', ' ', h)
+    h = html.unescape(h)
+    h = re.sub(r'[ \t]+', ' ', h)
+    h = re.sub(r'\n\s*\n+', '\n', h)
+    open('ag-' + f[7:-5] + '.txt', 'w', encoding='utf-8').write(h.strip() + '\n')
+```
+
+Fan the `curl` calls out in parallel first (`for s in cli/modes cli/hooks ...; do curl ... & done; wait`), writing `ag-raw-<slug>.html`, then run the stripper once over the whole batch and grep the `.txt` files. Closing `</td>` / `</th>` in the newline list is what keeps the settings and permissions tables readable one field per line.
 
 ### For remaining non-GitHub HTML pages, `curl` + `sed` + `grep` beats `WebFetch`
 
@@ -278,6 +305,8 @@ If the user flags anything, offer to open a follow-up task — either as a new m
 - **NEVER use GitHub footnote syntax (`[^name]`) in matrix cells.** VSCode's default markdown preview doesn't render footnotes, so the raw `[^name]` marker leaks into the rendered output. Always use reference-style links: `[✅][cx-plan]` in the cell, with `[cx-plan]: url "short description"` at the bottom of the file. Reference-style links render correctly in both GitHub and VSCode, and the link `title` attribute doubles as a hover tooltip for the source description.
 - **NEVER encode exact counts for drift-prone metrics** in matrix cells or hover text. Slash-command counts, hook-event counts, plugin counts, and similar "how many of X does this CLI have" numbers drift every release and cost one edit per refresh to maintain. Link to the authoritative source table instead (e.g. "built-in slash commands; user-defined via skills" rather than "31 built-in slash commands"). The actual count is one click away from the linked page. **Rationale:** the Codex slash-command count drifted 26 → 28 → 31 across three consecutive refreshes (2026-04-11, 2026-04-14, 2026-04-19), making the number itself a maintenance tax with no information value.
 - **ALWAYS cross-check every 🟡 or ❌ Gemini cell against `geminicli.com/docs/`** before committing. The GitHub repo's `docs/` tree is an incomplete subset — at least two Gemini cells (Sub-agents 🟡, Checkpoints / rewind 🟡) were mis-classified on the 2026-04-11 run because the canonical site wasn't checked. Treat a sub-optimal Gemini rating as a trigger to re-verify, not as a settled result. See [Fetching tips](#for-gemini-cli-prefer-geminiclicomdocs-over-the-github-repo).
+- **ALWAYS read the whole page before trusting a cell sourced from part of it.** A version floor, availability table, or feature list in one section is not evidence about behavior documented in another section of the same page. Grep for the claim you are re-verifying, not only for the feature name — then read the surrounding section. **Rationale:** the 2026-08-10 run verified Claude Code's cross-session-messaging row against that page's Availability section (which gave the v2.1.224 floor) and left the matrix asserting cross-machine messaging was "reply-only" — a limitation the same page had already retired further down, under Message sessions on other machines, since v2.1.225. The false claim shipped in both the matrix hover and the sub-agents deep-dive and survived until 2026-08-19. This is the third instance of the same failure mode: checking a page that is adjacent to the claim rather than the one that carries it (see the `agent-sdk/typescript` note under Claude Code, and the `geminicli.com` rule below).
+
 - **ALWAYS use the canonical-site URL in matrix link refs and deep-dive `Docs:` lines**, not the GitHub repo URL. For Gemini that's `geminicli.com/docs/`; for Codex that's `developers.openai.com/codex/`. The skill's own canonical-source rule applies to the matrix link refs themselves, not just the fetch phase. Exceptions: when a feature genuinely has no dedicated canonical-site page (e.g. Gemini image-paste UX as of 2026-05-15), citing the GitHub README is acceptable — but note the gap in the refresh report so future runs catch a new page if it appears. The 2026-05-15 run flipped 11 Gemini and 1 Codex matrix link refs from GitHub URLs to canonical-site URLs after a reader flagged that the rule was applied to fetches but not to citations.
 - **ALWAYS bump the date** on every row you verified, changed or not.
 - **ALWAYS run `npm run gate`** at the end. A green gate is part of the deliverable.
