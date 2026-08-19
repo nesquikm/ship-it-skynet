@@ -4,7 +4,7 @@ Half the confusion between these tools is that "agent" means five different thin
 
 **Format:** neutral term → what each vendor calls it → short definition.
 
-**Last updated:** 2026-08-10
+**Last updated:** 2026-08-19
 
 > **Migration note (2026-06-10):** the Gemini CLI rows below were replaced by Antigravity CLI (`agy`), its announced successor, ahead of Gemini CLI's 2026-06-18 consumer sunset. Antigravity visibly inherits Gemini conventions (`~/.gemini/` paths, extension variables). The rows initially carried "pending docs" caveats because only the [official repo](https://github.com/google-antigravity/antigravity-cli) was citable; since 2026-07-11 the official docs at antigravity.google are fetchable (llms.txt index; the pages are server-rendered HTML as of 2026-07-25) and the rows below cite them. The pre-migration Gemini CLI rows are preserved in git history and remain accurate for enterprise users of the predecessor.
 
